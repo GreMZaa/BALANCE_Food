@@ -194,59 +194,45 @@
       object-fit: cover;
     }
 
-    /* Categories Horizontal Bar */
+    /* Categories Horizontal Bar (Pill Chips) */
     .category-section {
-      padding: 0 16px 12px 16px;
+      padding: 0 16px 16px 16px;
     }
 
     .category-grid {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       overflow-x: auto;
       scrollbar-width: none;
+      white-space: nowrap;
     }
     .category-grid::-webkit-scrollbar { display: none; }
 
-    .category-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      min-width: 60px;
-      cursor: pointer;
-    }
-
-    .cat-icon-box {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
+    .category-chip {
       background: #ffffff;
-      box-shadow: var(--shadow-sm);
+      border: 1px solid #e2e8f0;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 22px;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
       transition: all 0.2s ease;
-      border: 1px solid #f1f5f9;
+      flex-shrink: 0;
     }
 
-    .category-item.active .cat-icon-box {
+    .category-chip.active {
       background: var(--accent-lime);
+      color: #0f172a;
       border-color: var(--accent-lime);
-      transform: translateY(-2px);
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(132, 204, 22, 0.3);
     }
 
-    .cat-title {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    .category-item.active .cat-title {
-      color: var(--text-main);
-      font-weight: 700;
-    }
 
     /* Section Title */
     .section-header {
@@ -674,18 +660,19 @@
       const icons = ['🧇', '🥗', '🍣', '🥞', '🥣', '☕', '🥤', '🍰'];
       
       container.innerHTML = menuData.categories.map((c, i) => `
-        <div class="category-item ${i === 0 ? 'active' : ''}" onclick="switchCategory('${c.id}', this)">
-          <div class="cat-icon-box">${icons[i % icons.length]}</div>
-          <div class="cat-title">${c.title_ru.split(' ')[0]}</div>
+        <div class="category-chip ${i === 0 ? 'active' : ''}" onclick="switchCategory('${c.id}', this)">
+          <span>${icons[i % icons.length]}</span>
+          <span>${c.title_ru}</span>
         </div>
       `).join('');
     }
 
     function switchCategory(catId, el) {
-      document.querySelectorAll('.category-item').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.category-chip').forEach(b => b.classList.remove('active'));
       el.classList.add('active');
       renderCategoryItems(catId);
     }
+
 
     function renderCategoryItems(catId) {
       const container = document.getElementById('menuCardsGrid');

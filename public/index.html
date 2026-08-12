@@ -3,63 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>BALANCE • Fitness • Protein • Detox (Nha Trang)</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>BALANCE • Premium Fitness & Detox v2</title>
 
-  <!-- GEO & Local SEO Meta -->
-  <meta name="description" content="Кафе здорового и фитнес-питания в Нячанге. Фитнес-вафли без глютена, боулы с подсчетом КБЖУ, спешелти кофе и экспресс-доставка за 30 минут.">
-  <meta name="keywords" content="BALANCE Food, Нячанг, Nha Trang, доставка еды, пп еда, без глютена, КБЖУ, фитнес вафли, боулы">
-  <meta property="og:title" content="BALANCE Food Нячанг — Фитнес • Протеин • Детокс">
-  <meta property="og:description" content="Здоровое питание с доставкой по Нячангу. Подсчет КБЖУ каждого блюда.">
-  <meta property="og:type" content="restaurant">
-  <meta property="og:locale" content="ru_RU">
-
-  <!-- Schema.org Restaurant Microdata -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Restaurant",
-    "name": "BALANCE Fitness • Protein • Detox",
-    "image": "https://balance-food.com/logo.png",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Nha Trang",
-      "addressRegion": "Khanh Hoa",
-      "addressCountry": "VN"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 12.2388,
-      "longitude": 109.1967
-    },
-    "servesCuisine": ["Healthy", "Gluten-Free", "Fitness", "Coffee"],
-    "priceRange": "40,000 - 250,000 VND",
-    "telephone": "+84123456789"
-  }
-  </script>
-
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
+
     :root {
-      --bg-dark: #080c09;
-      --card-bg: rgba(18, 25, 21, 0.85);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --accent-gold: #f4c430;
-      --accent-green: #22e575;
-      --accent-glow: rgba(34, 229, 117, 0.22);
+      --bg-dark: #0b0f0d;
+      --card-bg: #141a17;
+      --card-border: rgba(255, 255, 255, 0.07);
+      --accent-green: #10b981;
+      --accent-green-hover: #059669;
+      --accent-gold: #f59e0b;
       --text-white: #ffffff;
-      --text-muted: #94a39a;
-      --glass-blur: blur(20px);
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Inter', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -67,157 +40,93 @@
       background-color: var(--bg-dark);
       color: var(--text-white);
       min-height: 100vh;
-      padding-bottom: 110px;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 15% 10%, rgba(34, 229, 117, 0.12) 0%, transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(244, 196, 48, 0.07) 0%, transparent 45%);
+      padding-bottom: 120px;
     }
 
+    /* Header */
     header {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(8, 12, 9, 0.85);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
+      background: rgba(11, 15, 13, 0.95);
+      backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--card-border);
-      padding: 16px 20px;
+      padding: 14px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .brand-logo {
-      font-family: 'Syne', sans-serif;
-      font-size: 24px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
       font-weight: 800;
-      letter-spacing: 4px;
-      background: linear-gradient(135deg, #ffffff 30%, var(--accent-green) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 25px var(--accent-glow);
+      letter-spacing: 2px;
+      color: var(--text-white);
+    }
+    .brand-logo span {
+      color: var(--accent-green);
     }
 
     .header-actions {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
     }
 
-    .slides-trigger-btn {
-      background: rgba(255, 255, 255, 0.06);
+    .btn-presentation {
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--card-border);
       color: var(--text-white);
       padding: 6px 12px;
-      border-radius: 20px;
+      border-radius: 100px;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
+    }
+
+    .kcal-badge {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 6px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-green);
       display: flex;
       align-items: center;
       gap: 4px;
     }
 
-    .kcal-counter {
-      background: rgba(34, 229, 117, 0.12);
-      border: 1px solid rgba(34, 229, 117, 0.35);
-      padding: 6px 14px;
-      border-radius: 30px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--accent-green);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 0 18px var(--accent-glow);
-    }
-
-    /* Frontend Slides Slider Overlay */
-    .slides-modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(8, 12, 9, 0.95);
-      backdrop-filter: blur(25px);
-      z-index: 9999;
-      display: none;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 30px 20px;
-    }
-
-    .slides-modal.active {
-      display: flex;
-    }
-
-    .slide-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 28px;
-      padding: 30px 20px;
-      text-align: center;
-      margin: auto 0;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-    }
-
-    .slide-card h3 {
-      font-family: 'Syne', sans-serif;
-      font-size: 22px;
-      color: var(--accent-green);
-      margin-bottom: 12px;
-    }
-
-    .slide-card p {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .slides-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .btn-slide-nav {
-      background: var(--accent-green);
-      color: #000;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 16px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
+    /* Hero */
     .hero-banner {
-      margin: 16px 20px;
-      background: linear-gradient(135deg, rgba(34, 229, 117, 0.18) 0%, rgba(18, 25, 21, 0.8) 100%);
+      margin: 16px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(20, 26, 23, 0.8) 100%);
       border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 22px;
-      backdrop-filter: var(--glass-blur);
+      border-radius: 16px;
+      padding: 16px;
     }
 
     .hero-banner h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: 20px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
       color: var(--accent-green);
-      margin-bottom: 6px;
-      letter-spacing: 1px;
+      margin-bottom: 4px;
     }
 
     .hero-banner p {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
+    /* Categories Horizontal Bar */
     .categories-bar {
       display: flex;
       overflow-x: auto;
-      padding: 8px 20px 16px 20px;
-      gap: 10px;
+      padding: 0 16px 14px 16px;
+      gap: 8px;
       scrollbar-width: none;
     }
     .categories-bar::-webkit-scrollbar { display: none; }
@@ -226,69 +135,54 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
-      padding: 10px 20px;
-      border-radius: 24px;
+      padding: 8px 14px;
+      border-radius: 100px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       white-space: nowrap;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
     }
 
     .chip-btn.active {
-      background: linear-gradient(135deg, var(--accent-green) 0%, #15be5d 100%);
-      color: #030d07;
-      font-weight: 800;
+      background: var(--accent-green);
+      color: #000000;
+      font-weight: 700;
       border-color: var(--accent-green);
-      box-shadow: 0 4px 22px var(--accent-glow);
-      transform: translateY(-2px);
     }
 
+    /* Menu Grid */
     .menu-grid {
-      padding: 0 20px;
+      padding: 0 16px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
     }
 
-    .bento-card {
+    .food-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 24px;
+      border-radius: 16px;
       overflow: hidden;
-      backdrop-filter: var(--glass-blur);
-      transition: transform 0.3s ease, border-color 0.3s ease;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.4);
-    }
-
-    .bento-card:hover {
-      border-color: rgba(34, 229, 117, 0.4);
-      transform: translateY(-4px);
     }
 
     .card-img-wrap {
       width: 100%;
-      height: 180px;
+      height: 190px;
       overflow: hidden;
-      position: relative;
+      background: #1a221e;
     }
 
     .card-img-wrap img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.5s ease;
     }
 
-    .bento-card:hover .card-img-wrap img {
-      transform: scale(1.05);
-    }
-
-    .card-content {
-      padding: 18px;
+    .card-body {
+      padding: 14px;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
@@ -296,120 +190,179 @@
     }
 
     .item-title {
-      font-size: 18px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text-white);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .item-desc {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
-      margin-bottom: 14px;
       line-height: 1.4;
+      margin-bottom: 12px;
     }
 
+    /* KBJU Badges */
     .kbju-row {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .kbju-pill {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 4px 10px;
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 3px 8px;
+      border-radius: 6px;
       font-size: 11px;
-      font-weight: 600;
-      color: #b0c2b6;
+      font-weight: 500;
+      color: var(--text-muted);
     }
 
     .kbju-pill.kcal {
-      background: rgba(244, 196, 48, 0.12);
-      border-color: rgba(244, 196, 48, 0.35);
+      background: rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.25);
       color: var(--accent-gold);
+      font-weight: 700;
     }
 
-    .card-bottom {
+    /* Price and Button */
+    .card-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 14px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 10px;
+      border-top: 1px solid var(--card-border);
     }
 
-    .price-value {
-      font-family: 'Syne', sans-serif;
-      font-size: 20px;
+    .price-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 17px;
       font-weight: 800;
-      color: var(--accent-green);
+      color: var(--text-white);
     }
 
-    .btn-add-premium {
-      background: linear-gradient(135deg, var(--accent-green) 0%, #15bd5c 100%);
-      color: #030d07;
+    .btn-add {
+      background: var(--accent-green);
+      color: #000000;
       border: none;
-      padding: 12px 20px;
-      border-radius: 16px;
-      font-weight: 800;
+      padding: 8px 14px;
+      border-radius: 10px;
       font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 18px var(--accent-glow);
-      transition: all 0.2s ease;
+      transition: background-color 0.2s ease;
     }
 
-    .floating-cart-wrapper {
+    .btn-add:active {
+      background: var(--accent-green-hover);
+    }
+
+    /* Cart Bar */
+    .cart-wrapper {
       position: fixed;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      z-index: 999;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 99;
     }
 
-    .floating-cart-btn {
-      background: linear-gradient(135deg, var(--accent-green) 0%, #15a953 100%);
-      color: #030d07;
+    .cart-btn {
+      background: var(--accent-green);
+      color: #000000;
       border: none;
       width: 100%;
-      padding: 18px 24px;
-      border-radius: 22px;
-      font-size: 16px;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-size: 15px;
       font-weight: 800;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 12px 35px rgba(34, 229, 117, 0.45);
       cursor: pointer;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Presentation Modal */
+    .slides-modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(11, 15, 13, 0.96);
+      backdrop-filter: blur(20px);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px 16px;
+    }
+
+    .slides-modal.active { display: flex; }
+
+    .slide-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px 16px;
+      text-align: center;
+      margin: auto 0;
+    }
+
+    .slide-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      color: var(--accent-green);
+      margin-bottom: 10px;
+    }
+
+    .slide-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .slides-controls {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .btn-slide {
+      background: var(--accent-green);
+      color: #000;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="brand-logo">BALΩNCE</div>
+    <div class="brand-logo">BAL<span>Ω</span>NCE</div>
     <div class="header-actions">
-      <button class="slides-trigger-btn" onclick="toggleSlides(true)">
-        <span>✨ Презентация</span>
-      </button>
-      <div class="kcal-counter" id="totalKcalBadge">
+      <button class="btn-presentation" onclick="toggleSlides(true)">✨ Слайды</button>
+      <div class="kcal-badge">
         <span>🔥</span>
         <span id="kcalVal">0 kcal</span>
       </div>
     </div>
   </header>
 
-  <!-- Interactive Frontend Slides Modal -->
+  <!-- Presentation Modal -->
   <div class="slides-modal" id="slidesModal">
     <div class="slide-card">
       <h3 id="slideTitle">1. Наше УТП & КБЖУ</h3>
       <p id="slideDesc">BALANCE Food — первое фитнес-кафе в Нячанге с профессиональным подсчетом калорий, белков, жиров и углеводов в каждом блюде.</p>
     </div>
     <div class="slides-controls">
-      <button class="btn-slide-nav" onclick="prevSlide()">← Назад</button>
-      <button class="btn-slide-nav" onclick="nextSlide()">Далее →</button>
-      <button class="btn-slide-nav" style="background: rgba(255,255,255,0.1); color:#fff;" onclick="toggleSlides(false)">Закрыть ✕</button>
+      <button class="btn-slide" onclick="prevSlide()">← Назад</button>
+      <button class="btn-slide" onclick="nextSlide()">Далее →</button>
+      <button class="btn-slide" style="background: rgba(255,255,255,0.1); color:#fff;" onclick="toggleSlides(false)">✕</button>
     </div>
   </div>
 
@@ -422,9 +375,9 @@
 
   <div class="menu-grid" id="menuGrid"></div>
 
-  <div class="floating-cart-wrapper">
-    <button class="floating-cart-btn" onclick="checkoutOrder()">
-      <span>🛒 Оформить заказ (<span id="cartQty">0</span>)</span>
+  <div class="cart-wrapper">
+    <button class="cart-btn" onclick="checkoutOrder()">
+      <span>🛒 Корзина (<span id="cartQty">0</span>)</span>
       <span id="cartSum">0 VND</span>
     </button>
   </div>
@@ -465,10 +418,14 @@
 
     const customImages = {
       'waffle-salmon': '/waffle_salmon.png',
+      'waffle-mexican': '/waffle_mexican.png',
+      'waffle-chicken': '/waffle_chicken.png',
+      'waffle-julienne': '/waffle_julienne.png',
       'green-quinoa-bowl': '/green_bowl.png'
     };
 
     async function fetchMenu() {
+
       try {
         const res = await fetch('/api/menu');
         menuData = await res.json();
@@ -505,29 +462,29 @@
         const imgUrl = customImages[item.id];
 
         return `
-          <div class="bento-card">
+          <div class="food-card">
             ${imgUrl ? `
               <div class="card-img-wrap">
                 <img src="${imgUrl}" alt="${item.title_ru}">
               </div>
             ` : ''}
             
-            <div class="card-content">
+            <div class="card-body">
               <div>
                 <div class="item-title">${item.title_ru}</div>
                 ${item.description_ru ? `<div class="item-desc">${item.description_ru}</div>` : ''}
                 
                 <div class="kbju-row">
                   ${kcal ? `<div class="kbju-pill kcal">🔥 ${kcal} kcal</div>` : ''}
-                  ${item.protein ? `<div class="kbju-pill">💪 Б: ${item.protein}g</div>` : ''}
-                  ${item.fat ? `<div class="kbju-pill">🥑 Ж: ${item.fat}g</div>` : ''}
-                  ${item.carbs ? `<div class="kbju-pill">🌾 У: ${item.carbs}g</div>` : ''}
+                  ${item.protein ? `<div class="kbju-pill">Б: ${item.protein}g</div>` : ''}
+                  ${item.fat ? `<div class="kbju-pill">Ж: ${item.fat}g</div>` : ''}
+                  ${item.carbs ? `<div class="kbju-pill">У: ${item.carbs}g</div>` : ''}
                 </div>
               </div>
 
-              <div class="card-bottom">
-                <div class="price-value">${price.toLocaleString()} VND</div>
-                <button class="btn-add-premium" onclick="addItem('${item.id}', ${price}, ${kcal})">
+              <div class="card-footer">
+                <div class="price-tag">${price.toLocaleString()} VND</div>
+                <button class="btn-add" onclick="addItem('${item.id}', ${price}, ${kcal})">
                   + В корзину
                 </button>
               </div>

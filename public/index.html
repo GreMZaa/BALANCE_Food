@@ -18,7 +18,7 @@
       --bg-card: #ffffff;
       --text-main: #0f172a;
       --text-muted: #64748b;
-      --accent-lime: #84cc16; /* Неоново-салатовый как на макете */
+      --accent-lime: #84cc16;
       --accent-lime-hover: #65a30d;
       --accent-black: #0f172a;
       --border-color: #f1f5f9;
@@ -35,16 +35,47 @@
     }
 
     body {
-      background-color: var(--bg-main);
+      background-color: #0f172a; /* Фон в стиле десктоп-презентации */
       color: var(--text-main);
       min-height: 100vh;
-      padding-bottom: 110px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    /* Мобильный контейнер (iPhone Wrapper для ПК, растягивается на мобиле) */
+    .app-viewport {
+      width: 100%;
+      max-width: 430px; /* Идеальная шина iPhone 15 Pro Max */
+      min-height: 844px;
+      background-color: var(--bg-main);
+      border-radius: 40px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Для мобильных устройств — растягиваем на весь экран */
+    @media (max-width: 480px) {
+      body {
+        padding: 0;
+        background-color: var(--bg-main);
+      }
+      .app-viewport {
+        max-width: 100%;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+      }
     }
 
     /* Top Navigation Bar */
     .top-header {
       background: #ffffff;
-      padding: 14px 20px;
+      padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -55,97 +86,106 @@
     }
 
     .btn-circle {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: #f1f5f9;
       border: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 16px;
       color: var(--text-main);
       cursor: pointer;
+      transition: background 0.2s;
     }
+    .btn-circle:active { background: #e2e8f0; }
 
     .location-selector {
       text-align: center;
+      cursor: pointer;
     }
 
     .location-label {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
       font-weight: 500;
     }
 
     .location-value {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-main);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 3px;
     }
+    .location-value span { color: var(--accent-lime-hover); }
 
-    .location-value span {
-      color: var(--accent-lime-hover);
+    /* Main Scrollable Content Area */
+    .content-area {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding-bottom: 90px;
+      scrollbar-width: none;
     }
+    .content-area::-webkit-scrollbar { display: none; }
 
     /* Promo Hero Banner */
     .hero-container {
-      padding: 16px 20px;
+      padding: 14px 16px;
     }
 
     .hero-card {
       background: #1e293b;
-      border-radius: 24px;
-      padding: 20px;
+      border-radius: 20px;
+      padding: 16px;
       color: #ffffff;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
     }
 
     .hero-info {
-      max-width: 55%;
+      max-width: 58%;
       z-index: 2;
     }
 
     .hero-info h2 {
       font-family: 'Outfit', sans-serif;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 800;
       line-height: 1.2;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .hero-info p {
-      font-size: 11px;
+      font-size: 10px;
       color: #94a3b8;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .btn-hero {
       background: var(--accent-lime);
       color: #0f172a;
       border: none;
-      padding: 8px 16px;
+      padding: 6px 14px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 800;
       cursor: pointer;
     }
 
     .hero-img-wrap {
-      width: 130px;
-      height: 130px;
+      width: 105px;
+      height: 105px;
       border-radius: 50%;
       overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
 
     .hero-img-wrap img {
@@ -154,15 +194,14 @@
       object-fit: cover;
     }
 
-    /* Categories Icons Horizontal Bar */
+    /* Categories Horizontal Bar */
     .category-section {
-      padding: 0 20px 16px 20px;
+      padding: 0 16px 12px 16px;
     }
 
     .category-grid {
       display: flex;
-      justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       overflow-x: auto;
       scrollbar-width: none;
     }
@@ -172,21 +211,21 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
-      min-width: 68px;
+      gap: 5px;
+      min-width: 60px;
       cursor: pointer;
     }
 
     .cat-icon-box {
-      width: 60px;
-      height: 60px;
-      border-radius: 18px;
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
       background: #ffffff;
       box-shadow: var(--shadow-sm);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
+      font-size: 22px;
       transition: all 0.2s ease;
       border: 1px solid #f1f5f9;
     }
@@ -198,9 +237,10 @@
     }
 
     .cat-title {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
       color: var(--text-muted);
+      text-align: center;
     }
 
     .category-item.active .cat-title {
@@ -210,7 +250,7 @@
 
     /* Section Title */
     .section-header {
-      padding: 0 20px 12px 20px;
+      padding: 0 16px 10px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -218,53 +258,58 @@
 
     .section-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 800;
       color: var(--text-main);
     }
 
     .see-more {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--accent-lime-hover);
       text-decoration: none;
     }
 
-    /* Menu Cards Grid (2 Column Clean UI) */
+    /* 2 Column Clean Mobile Grid */
     .menu-cards-grid {
-      padding: 0 20px;
+      padding: 0 16px;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      gap: 12px;
     }
 
     .product-card {
       background: #ffffff;
-      border-radius: 20px;
-      padding: 12px;
+      border-radius: 18px;
+      padding: 10px;
       box-shadow: var(--shadow-card);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
       cursor: pointer;
+      transition: transform 0.2s;
     }
+
+    .product-card:active { transform: scale(0.98); }
 
     .fav-heart {
       position: absolute;
-      top: 14px;
-      right: 14px;
+      top: 12px;
+      right: 12px;
       color: #cbd5e1;
-      font-size: 16px;
+      font-size: 14px;
       z-index: 2;
+      transition: color 0.2s;
     }
+    .fav-heart.active { color: #ef4444; }
 
     .prod-img-box {
       width: 100%;
-      height: 120px;
-      border-radius: 14px;
+      height: 100px;
+      border-radius: 12px;
       overflow: hidden;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       background: #f8faf9;
     }
 
@@ -275,33 +320,33 @@
     }
 
     .prod-name {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 4px;
-      line-height: 1.3;
+      margin-bottom: 2px;
+      line-height: 1.2;
     }
 
     .prod-desc {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
-      margin-bottom: 10px;
-      line-height: 1.3;
-      height: 28px;
+      margin-bottom: 6px;
+      line-height: 1.2;
+      height: 24px;
       overflow: hidden;
     }
 
     .kbju-info-mini {
       display: flex;
-      gap: 4px;
-      font-size: 10px;
-      font-weight: 600;
+      gap: 3px;
+      font-size: 9px;
+      font-weight: 700;
       color: #059669;
       background: #ecfdf5;
-      padding: 3px 6px;
-      border-radius: 6px;
+      padding: 2px 5px;
+      border-radius: 5px;
       width: max-content;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .card-action-row {
@@ -313,19 +358,19 @@
 
     .prod-price {
       font-family: 'Outfit', sans-serif;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 800;
       color: var(--text-main);
     }
 
     .btn-add-lime {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background: var(--accent-lime);
       border: none;
       color: #0f172a;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -333,29 +378,27 @@
       cursor: pointer;
     }
 
-    /* Product Details Modal (As shown in mockup 2) */
+    /* Modal Sheet Overlay */
     .modal-overlay {
-      position: fixed;
+      position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(10px);
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(8px);
       z-index: 1000;
       display: none;
       align-items: flex-end;
     }
 
-    .modal-overlay.active {
-      display: flex;
-    }
+    .modal-overlay.active { display: flex; }
 
     .modal-details-card {
       background: #ffffff;
-      border-top-left-radius: 32px;
-      border-top-right-radius: 32px;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
       width: 100%;
-      max-height: 88vh;
+      max-height: 90%;
       overflow-y: auto;
-      padding: 24px 20px 30px 20px;
+      padding: 20px 16px 24px 16px;
       animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -368,15 +411,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .modal-img-wrap {
       width: 100%;
-      height: 220px;
-      border-radius: 24px;
+      height: 180px;
+      border-radius: 18px;
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       background: #f8faf9;
     }
 
@@ -388,224 +431,211 @@
 
     .modal-prod-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 800;
       color: var(--text-main);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .modal-location {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      margin-bottom: 14px;
     }
 
     /* KBJU 4-Column Table Grid */
     .kbju-4col-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      gap: 8px;
       background: #f8faf9;
-      padding: 14px;
-      border-radius: 16px;
+      padding: 10px;
+      border-radius: 14px;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .kbju-col-val {
       font-family: 'Outfit', sans-serif;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 800;
       color: var(--text-main);
     }
 
     .kbju-col-label {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
       font-weight: 600;
-      margin-top: 2px;
     }
 
     .modal-desc-heading {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .modal-desc-text {
-      font-size: 13px;
+      font-size: 11px;
       color: var(--text-muted);
-      line-height: 1.5;
-      margin-bottom: 24px;
-    }
-
-    .modal-bottom-row {
-      display: flex;
-      gap: 12px;
+      line-height: 1.4;
+      margin-bottom: 20px;
     }
 
     .btn-buy-now {
-      flex-grow: 1;
+      width: 100%;
       background: var(--accent-lime);
       color: #0f172a;
       border: none;
-      padding: 16px;
-      border-radius: 18px;
-      font-size: 15px;
+      padding: 14px;
+      border-radius: 16px;
+      font-size: 14px;
       font-weight: 800;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(132, 204, 22, 0.35);
+      box-shadow: 0 6px 18px rgba(132, 204, 22, 0.3);
     }
 
     /* Bottom App Tab Bar */
     .tab-bar {
-      position: fixed;
+      position: absolute;
       bottom: 0; left: 0; right: 0;
       background: #ffffff;
       border-top: 1px solid #f1f5f9;
-      padding: 10px 24px;
+      padding: 8px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 900;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
     }
 
     .tab-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
-      font-size: 20px;
+      gap: 2px;
+      font-size: 18px;
       color: #94a3b8;
       cursor: pointer;
+      position: relative;
     }
 
-    .tab-item.active {
-      color: var(--accent-lime-hover);
+    .tab-item.active { color: var(--accent-lime-hover); }
+
+    .tab-badge {
+      position: absolute;
+      top: -4px; right: -6px;
+      background: var(--accent-lime);
+      color: #000;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 8px;
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Header Navigation -->
-  <div class="top-header">
-    <button class="btn-circle">🔍</button>
-    <div class="location-selector">
-      <div class="location-label">Локация</div>
-      <div class="location-value"><span>📍</span> Нячанг, Вьетнам ▾</div>
+  <div class="app-viewport">
+
+    <!-- Top Header Navigation -->
+    <div class="top-header">
+      <button class="btn-circle" onclick="searchAlert()">🔍</button>
+      <div class="location-selector" onclick="selectLocationAlert()">
+        <div class="location-label">Локация</div>
+        <div class="location-value"><span>📍</span> Нячанг, Вьетнам ▾</div>
+      </div>
+      <button class="btn-circle" onclick="openReferralAlert()">🎁</button>
     </div>
-    <button class="btn-circle" onclick="openSlides()">✨</button>
-  </div>
 
-  <!-- Hero Promo Banner -->
-  <div class="hero-container">
-    <div class="hero-card">
-      <div class="hero-info">
-        <h2>Доставка за 30 минут</h2>
-        <p>Фитнес-вафли и боулы с подсчетом КБЖУ</p>
-        <button class="btn-hero" onclick="scrollToMenu()">Заказать</button>
-      </div>
-      <div class="hero-img-wrap">
-        <img src="/hero_banner.png" alt="BALANCE Fitness Food">
-      </div>
-    </div>
-  </div>
+    <!-- Scrollable Content Area -->
+    <div class="content-area">
 
-  <!-- Categories Horizontal Scroll -->
-  <div class="category-section">
-    <div class="category-grid" id="categoriesGrid">
-      <div class="category-item active">
-        <div class="cat-icon-box">🧇</div>
-        <div class="cat-title">Вафли</div>
-      </div>
-      <div class="category-item">
-        <div class="cat-icon-box">🥗</div>
-        <div class="cat-title">Боулы</div>
-      </div>
-      <div class="category-item">
-        <div class="cat-icon-box">🍣</div>
-        <div class="cat-title">Суши</div>
-      </div>
-      <div class="category-item">
-        <div class="cat-icon-box">☕</div>
-        <div class="cat-title">Кофе</div>
-      </div>
-      <div class="category-item">
-        <div class="cat-icon-box">🥤</div>
-        <div class="cat-title">Смузи</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section Title -->
-  <div class="section-header">
-    <div class="section-title" id="sectionTitle">Рекомендуем вам</div>
-    <a href="#" class="see-more">Все</a>
-  </div>
-
-  <!-- 2 Column Clean Products Grid -->
-  <div class="menu-cards-grid" id="menuCardsGrid"></div>
-
-  <!-- Bottom Mobile Tab Bar -->
-  <div class="tab-bar">
-    <div class="tab-item active">🏠</div>
-    <div class="tab-item">🤍</div>
-    <div class="tab-item">📋</div>
-    <div class="tab-item" onclick="openCartView()" style="position: relative;">
-      🛍️
-      <span id="tabCartBadge" style="position: absolute; top: -4px; right: -4px; background: var(--accent-lime); color: #000; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 10px; display: none;">0</span>
-    </div>
-    <div class="tab-item">👤</div>
-  </div>
-
-  <!-- Product Details Modal Window (Mockup 2 & 3) -->
-  <div class="modal-overlay" id="detailsModal">
-    <div class="modal-details-card">
-      <div class="modal-top-bar">
-        <button class="btn-circle" onclick="closeDetailsModal()">←</button>
-        <div style="font-weight: 700; font-size: 16px;">Детали блюда</div>
-        <button class="btn-circle">🤍</button>
-      </div>
-
-      <div class="modal-img-wrap">
-        <img id="modalImg" src="" alt="">
-      </div>
-
-      <div class="modal-prod-title" id="modalTitle">--</div>
-      <div class="modal-location">📍 Нячанг, BALANCE Cafe</div>
-
-      <!-- KBJU 4-Column Table -->
-      <div class="kbju-4col-grid">
-        <div>
-          <div class="kbju-col-val" id="modalKcal">0</div>
-          <div class="kbju-col-label">ккал</div>
-        </div>
-        <div>
-          <div class="kbju-col-val" id="modalP">0g</div>
-          <div class="kbju-col-label">белки</div>
-        </div>
-        <div>
-          <div class="kbju-col-val" id="modalF">0g</div>
-          <div class="kbju-col-label">жиры</div>
-        </div>
-        <div>
-          <div class="kbju-col-val" id="modalC">0g</div>
-          <div class="kbju-col-label">углеводы</div>
+      <!-- Hero Promo Banner -->
+      <div class="hero-container">
+        <div class="hero-card">
+          <div class="hero-info">
+            <h2>Доставка за 30 минут</h2>
+            <p>Фитнес-вафли и боулы с подсчетом КБЖУ</p>
+            <button class="btn-hero" onclick="scrollToMenu()">Заказать</button>
+          </div>
+          <div class="hero-img-wrap">
+            <img src="/hero_banner.png" alt="BALANCE Fitness Food">
+          </div>
         </div>
       </div>
 
-      <div class="modal-desc-heading">Описание</div>
-      <div class="modal-desc-text" id="modalDesc">--</div>
+      <!-- Categories Horizontal Scroll -->
+      <div class="category-section">
+        <div class="category-grid" id="categoriesGrid"></div>
+      </div>
 
-      <div class="modal-bottom-row">
+      <!-- Section Title -->
+      <div class="section-header">
+        <div class="section-title" id="sectionTitle">Рекомендуем вам</div>
+        <a href="#" class="see-more" onclick="showAllAlert(event)">Все</a>
+      </div>
+
+      <!-- 2 Column Clean Mobile Grid -->
+      <div class="menu-cards-grid" id="menuCardsGrid"></div>
+
+    </div>
+
+    <!-- Bottom Mobile Tab Bar -->
+    <div class="tab-bar">
+      <div class="tab-item active" onclick="switchTab('home', this)">🏠</div>
+      <div class="tab-item" onclick="switchTab('fav', this)">🤍</div>
+      <div class="tab-item" onclick="switchTab('orders', this)">📋</div>
+      <div class="tab-item" onclick="openCartView(this)">
+        🛍️
+        <span class="tab-badge" id="tabCartBadge">0</span>
+      </div>
+      <div class="tab-item" onclick="switchTab('profile', this)">👤</div>
+    </div>
+
+    <!-- Product Details Modal Window (Mockup 2 & 3) -->
+    <div class="modal-overlay" id="detailsModal">
+      <div class="modal-details-card">
+        <div class="modal-top-bar">
+          <button class="btn-circle" onclick="closeDetailsModal()">←</button>
+          <div style="font-weight: 700; font-size: 14px;">Детали блюда</div>
+          <button class="btn-circle" onclick="toggleModalFav(this)">🤍</button>
+        </div>
+
+        <div class="modal-img-wrap">
+          <img id="modalImg" src="" alt="">
+        </div>
+
+        <div class="modal-prod-title" id="modalTitle">--</div>
+        <div class="modal-location">📍 Нячанг, BALANCE Cafe</div>
+
+        <!-- KBJU 4-Column Table -->
+        <div class="kbju-4col-grid">
+          <div>
+            <div class="kbju-col-val" id="modalKcal">0</div>
+            <div class="kbju-col-label">ккал</div>
+          </div>
+          <div>
+            <div class="kbju-col-val" id="modalP">0g</div>
+            <div class="kbju-col-label">белки</div>
+          </div>
+          <div>
+            <div class="kbju-col-val" id="modalF">0g</div>
+            <div class="kbju-col-label">жиры</div>
+          </div>
+          <div>
+            <div class="kbju-col-val" id="modalC">0g</div>
+            <div class="kbju-col-label">углеводы</div>
+          </div>
+        </div>
+
+        <div class="modal-desc-heading">Описание</div>
+        <div class="modal-desc-text" id="modalDesc">--</div>
+
         <button class="btn-buy-now" id="modalBuyBtn" onclick="addCurrentModalToCart()">Добавить в корзину</button>
       </div>
     </div>
+
   </div>
 
   <script>
@@ -614,6 +644,7 @@
 
     let menuData = null;
     let cart = [];
+    let favorites = new Set();
     let activeItemForModal = null;
 
     const customImages = {
@@ -667,10 +698,13 @@
         const price = item.price_vnd || item.price_m || 0;
         const kcal = item.kcal || item.kcal_m || 0;
         const imgUrl = customImages[item.id] || '/waffle_salmon.png';
+        const isFav = favorites.has(item.id);
 
         return `
           <div class="product-card" onclick="openDetailsModal('${item.id}')">
-            <div class="fav-heart">🤍</div>
+            <div class="fav-heart ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFav('${item.id}', this)">
+              ${isFav ? '❤️' : '🤍'}
+            </div>
             <div class="prod-img-box">
               <img src="${imgUrl}" alt="${item.title_ru}">
             </div>
@@ -687,6 +721,19 @@
           </div>
         `;
       }).join('');
+    }
+
+    function toggleFav(id, el) {
+      if (favorites.has(id)) {
+        favorites.delete(id);
+        el.innerText = '🤍';
+        el.classList.remove('active');
+      } else {
+        favorites.add(id);
+        el.innerText = '❤️';
+        el.classList.add('active');
+      }
+      if (tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
 
     function openDetailsModal(itemId) {
@@ -719,6 +766,11 @@
       document.getElementById('detailsModal').classList.remove('active');
     }
 
+    function toggleModalFav(btn) {
+      if (!activeItemForModal) return;
+      toggleFav(activeItemForModal.id, btn);
+    }
+
     function addToCart(id, price, kcal) {
       cart.push({ id, price, kcal });
       if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
@@ -743,20 +795,58 @@
       }
     }
 
-    function openCartView() {
+    function openCartView(el) {
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+
       if (cart.length === 0) {
-        tg.showAlert("Ваша корзина пуста");
+        tg.showAlert("Ваша корзина пуста. Добавьте блюда из меню.");
         return;
       }
-      tg.sendData(JSON.stringify({ action: 'CHECKOUT', cart }));
+      const totalSum = cart.reduce((s, i) => s + i.price, 0);
+      const totalKcal = cart.reduce((s, i) => s + i.kcal, 0);
+      
+      tg.showConfirm(`Оформить заказ?\nВыбрано позиций: ${cart.length}\nСумма: ${totalSum.toLocaleString()} VND\nКалории: ${totalKcal} kcal`, (ok) => {
+        if (ok) tg.sendData(JSON.stringify({ action: 'CHECKOUT', cart }));
+      });
+    }
+
+    function switchTab(name, el) {
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+
+      if (name === 'fav') {
+        if (favorites.size === 0) {
+          tg.showAlert("У вас пока нет избранных блюд. Нажмите 🤍 на карточке товара.");
+        } else {
+          tg.showAlert(`В избранном товаров: ${favorites.size}`);
+        }
+      } else if (name === 'orders') {
+        tg.showAlert("История заказов: Ваш прошлый заказ (Вафля с лососем + Американо) готов к повтору за 1 клик.");
+      } else if (name === 'profile') {
+        tg.showAlert("Ваш баланс: 50,000 VND бонусных баллов.\nРеферальная ссылка скопирована в буфер.");
+      }
+    }
+
+    function searchAlert() {
+      tg.showAlert("Поиск по меню: Введите 'Вафли', 'Смузи', 'Боул' или желаемый лимит КБЖУ.");
+    }
+
+    function selectLocationAlert() {
+      tg.showAlert("Ваша локация: Нячанг, Вьетнам.\nЗона доставки: Центр / Север / Анвьен (до 30 мин).");
+    }
+
+    function openReferralAlert() {
+      tg.showAlert("🎁 Акция BALANCE: Приведи друга и получи 50,000 VND бонусы на смузи!");
+    }
+
+    function showAllAlert(e) {
+      e.preventDefault();
+      tg.showAlert("Показаны все популярные фитнес-позиции BALANCE.");
     }
 
     function scrollToMenu() {
       document.getElementById('menuCardsGrid').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function openSlides() {
-      tg.showAlert("Презентация BALANCE: Фитнес-питание в Нячанге с доставкой за 30 минут.");
     }
 
     fetchMenu();

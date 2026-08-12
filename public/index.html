@@ -194,18 +194,18 @@
       object-fit: cover;
     }
 
-    /* Categories 3D Cards Horizontal Scroll (Like Reference 2, but for BALANCE PP menu) */
+    /* Categories Horizontal Scroll - Exact 1-to-1 match of Reference Mockup 2 */
     .category-section {
-      padding: 0 0 16px 16px; /* Отступ справа 0, чтобы крайняя карточка уходила за край для визуального эффекта скролла */
+      padding: 0 0 16px 16px;
       overflow: hidden;
     }
 
     .category-grid {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       overflow-x: auto;
       scrollbar-width: none;
-      padding-right: 24px; /* Плавный срез крайней карточки справа */
+      padding-right: 24px; /* Крайняя карточка уходит за срезанный край */
     }
     .category-grid::-webkit-scrollbar { display: none; }
 
@@ -213,42 +213,46 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 76px;
-      height: 84px;
-      flex-shrink: 0;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 20px;
+      gap: 6px;
+      min-width: 62px;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+      flex-shrink: 0;
+    }
+
+    .cat-icon-box-white {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .category-card-item.active {
+    .category-card-item.active .cat-icon-box-white {
       background: var(--accent-lime);
       border-color: var(--accent-lime);
-      box-shadow: 0 6px 18px rgba(132, 204, 22, 0.35);
+      box-shadow: 0 6px 18px rgba(132, 204, 22, 0.4);
       transform: translateY(-2px);
-    }
-
-    .cat-icon-emoji {
-      font-size: 26px;
-      line-height: 1;
     }
 
     .cat-card-title {
       font-size: 11px;
-      font-weight: 700;
-      color: #64748b;
+      font-weight: 600;
+      color: #94a3b8;
       text-align: center;
+      white-space: nowrap;
     }
 
     .category-card-item.active .cat-card-title {
       color: #0f172a;
       font-weight: 800;
     }
+
 
 
 
@@ -722,11 +726,12 @@
       
       container.innerHTML = menuData.categories.map((c, i) => `
         <div class="category-card-item ${i === 0 ? 'active' : ''}" onclick="switchCategory('${c.id}', this)">
-          <div class="cat-icon-emoji">${icons[i % icons.length]}</div>
+          <div class="cat-icon-box-white">${icons[i % icons.length]}</div>
           <div class="cat-card-title">${c.title_ru.split(' ')[0]}</div>
         </div>
       `).join('');
     }
+
 
     function switchCategory(catId, el) {
       document.querySelectorAll('.category-card-item').forEach(b => b.classList.remove('active'));

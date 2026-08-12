@@ -622,6 +622,49 @@
       </div>
     </div>
 
+    <!-- Search Modal -->
+    <div class="modal-overlay" id="searchModal">
+      <div class="modal-details-card">
+        <div class="modal-top-bar">
+          <div style="font-weight: 800; font-size: 16px;">🔍 Поиск по меню</div>
+          <button class="btn-circle" onclick="closeSearchModal()">✕</button>
+        </div>
+        <input type="text" id="searchInput" placeholder="Введите название блюда или КБЖУ..." style="width: 100%; padding: 12px 16px; border-radius: 14px; border: 1px solid #e2e8f0; font-size: 14px; margin-bottom: 14px;" oninput="handleSearch(this.value)">
+        <div id="searchResults" style="max-height: 300px; overflow-y: auto;"></div>
+      </div>
+    </div>
+
+    <!-- Location Modal -->
+    <div class="modal-overlay" id="locationModal">
+      <div class="modal-details-card">
+        <div class="modal-top-bar">
+          <div style="font-weight: 800; font-size: 16px;">📍 Зона доставки Нячанг</div>
+          <button class="btn-circle" onclick="closeLocationModal()">✕</button>
+        </div>
+        <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Выберите ваш район для расчета времени и стоимости курьера:</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button class="btn-buy-now" style="background: #f1f5f9; color: #000; text-align: left;" onclick="selectZone('Центр Нячанга', 0, 30)">📍 Центр Нячанга (Бесплатно, 30 мин)</button>
+          <button class="btn-buy-now" style="background: #f1f5f9; color: #000; text-align: left;" onclick="selectZone('Северный район (Pham Van Dong)', 20000, 35)">📍 Северный район (20,000 VND, 35 мин)</button>
+          <button class="btn-buy-now" style="background: #f1f5f9; color: #000; text-align: left;" onclick="selectZone('Анвьен (An Vien)', 30000, 40)">📍 Анвьен / Канатная дорога (30,000 VND, 40 мин)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gift Referral Modal -->
+    <div class="modal-overlay" id="giftModal">
+      <div class="modal-details-card" style="text-align: center;">
+        <div class="modal-top-bar">
+          <div style="font-weight: 800; font-size: 16px;">🎁 Бонус 50,000 VND</div>
+          <button class="btn-circle" onclick="closeGiftModal()">✕</button>
+        </div>
+        <div style="font-size: 40px; margin-bottom: 10px;">🥑</div>
+        <div style="font-weight: 800; font-size: 16px; margin-bottom: 6px;">Приведи друга — получи смузи!</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">Поделитесь вашей реферальной ссылкой. Вы и ваш друг получите по +50,000 VND на баланс после первого заказа.</div>
+        <button class="btn-buy-now" onclick="copyRefLink()">Скопировать реферальную ссылку</button>
+      </div>
+    </div>
+
+
   </div>
 
   <script>
@@ -816,15 +859,51 @@
     }
 
     function searchAlert() {
-      tg.showAlert("Поиск по меню: Введите 'Вафли', 'Смузи', 'Боул' или желаемый лимит КБЖУ.");
+      document.getElementById('searchModal').classList.add('active');
+    }
+    function closeSearchModal() {
+      document.getElementById('searchModal').classList.remove('active');
+    }
+    function handleSearch(val) {
+      const resContainer = document.getElementById('searchResults');
+      if (!val.trim()) { resContainer.innerHTML = ''; return; }
+      const query = val.toLowerCase();
+      let matches = [];
+      menuData.categories.forEach(c => {
+        c.items.forEach(i => {
+          if (i.title_ru.toLowerCase().includes(query) || (i.kcal && i.kcal.toString().includes(query))) {
+            matches.push(i);
+          }
+        });
+      });
+      resContainer.innerHTML = matches.map(m => `
+        <div style="padding: 10px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;" onclick="closeSearchModal(); openDetailsModal('${m.id}')">
+          <div><strong>${m.title_ru}</strong><div style="font-size: 11px; color: var(--text-muted);">🔥 ${m.kcal || 0} kcal</div></div>
+          <div style="font-weight: 800;">${(m.price_vnd || m.price_m || 0).toLocaleString()} VND</div>
+        </div>
+      `).join('');
     }
 
     function selectLocationAlert() {
-      tg.showAlert("Ваша локация: Нячанг, Вьетнам.\nЗона доставки: Центр / Север / Анвьен (до 30 мин).");
+      document.getElementById('locationModal').classList.add('active');
+    }
+    function closeLocationModal() {
+      document.getElementById('locationModal').classList.remove('active');
+    }
+    function selectZone(name, fee, time) {
+      closeLocationModal();
+      tg.showAlert(`Зона выбрана: ${name}\nДоставка: ${fee === 0 ? 'Бесплатно' : fee.toLocaleString() + ' VND'}\nВремя: ~${time} минут`);
     }
 
     function openReferralAlert() {
-      tg.showAlert("🎁 Акция BALANCE: Приведи друга и получи 50,000 VND бонусы на смузи!");
+      document.getElementById('giftModal').classList.add('active');
+    }
+    function closeGiftModal() {
+      document.getElementById('giftModal').classList.remove('active');
+    }
+    function copyRefLink() {
+      closeGiftModal();
+      tg.showAlert("✅ Реферальная ссылка скопирована:\nt.me/BalanceFoodBot?start=ref_12345");
     }
 
     function showAllAlert(e) {
@@ -835,6 +914,7 @@
     function scrollToMenu() {
       document.getElementById('menuCardsGrid').scrollIntoView({ behavior: 'smooth' });
     }
+
 
     fetchMenu();
   </script>

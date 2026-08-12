@@ -1,0 +1,16 @@
+{
+  "name": "balance-food-telegram-app",
+  "version": "1.0.0",
+  "description": "Telegram Bot + Mini App for BALANCE Fitness • Protein • Detox (Nha Trang)",
+  "main": "src/bot.js",
+  "scripts": {
+    "start": "node src/bot.js",
+    "dev": "node --watch src/bot.js"
+  },
+  "dependencies": {
+    "grammy": "^1.30.0",
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
+  }
+}

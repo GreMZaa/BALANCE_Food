@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BALANCE • Fitness • Protein • Detox (Nha Trang)</title>
+
+  <!-- GEO & Local SEO Meta -->
+  <meta name="description" content="Кафе здорового и фитнес-питания в Нячанге. Фитнес-вафли без глютена, боулы с подсчетом КБЖУ, спешелти кофе и экспресс-доставка за 30 минут.">
+  <meta name="keywords" content="BALANCE Food, Нячанг, Nha Trang, доставка еды, пп еда, без глютена, КБЖУ, фитнес вафли, боулы">
+  <meta property="og:title" content="BALANCE Food Нячанг — Фитнес • Протеин • Детокс">
+  <meta property="og:description" content="Здоровое питание с доставкой по Нячангу. Подсчет КБЖУ каждого блюда.">
+  <meta property="og:type" content="restaurant">
+  <meta property="og:locale" content="ru_RU">
+
+  <!-- Schema.org Restaurant Microdata -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "BALANCE Fitness • Protein • Detox",
+    "image": "https://balance-food.com/logo.png",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Nha Trang",
+      "addressRegion": "Khanh Hoa",
+      "addressCountry": "VN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 12.2388,
+      "longitude": 109.1967
+    },
+    "servesCuisine": ["Healthy", "Gluten-Free", "Fitness", "Coffee"],
+    "priceRange": "40,000 - 250,000 VND",
+    "telephone": "+84123456789"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #080c09;
+      --card-bg: rgba(18, 25, 21, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-gold: #f4c430;
+      --accent-green: #22e575;
+      --accent-glow: rgba(34, 229, 117, 0.22);
+      --text-white: #ffffff;
+      --text-muted: #94a39a;
+      --glass-blur: blur(20px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      min-height: 100vh;
+      padding-bottom: 110px;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(34, 229, 117, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(244, 196, 48, 0.07) 0%, transparent 45%);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 12, 9, 0.85);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid var(--card-border);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent-green) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 25px var(--accent-glow);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .slides-trigger-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: var(--text-white);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .kcal-counter {
+      background: rgba(34, 229, 117, 0.12);
+      border: 1px solid rgba(34, 229, 117, 0.35);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 18px var(--accent-glow);
+    }
+
+    /* Frontend Slides Slider Overlay */
+    .slides-modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(8, 12, 9, 0.95);
+      backdrop-filter: blur(25px);
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 30px 20px;
+    }
+
+    .slides-modal.active {
+      display: flex;
+    }
+
+    .slide-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 30px 20px;
+      text-align: center;
+      margin: auto 0;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+
+    .slide-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      color: var(--accent-green);
+      margin-bottom: 12px;
+    }
+
+    .slide-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .slides-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-slide-nav {
+      background: var(--accent-green);
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .hero-banner {
+      margin: 16px 20px;
+      background: linear-gradient(135deg, rgba(34, 229, 117, 0.18) 0%, rgba(18, 25, 21, 0.8) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 22px;
+      backdrop-filter: var(--glass-blur);
+    }
+
+    .hero-banner h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      color: var(--accent-green);
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .hero-banner p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .categories-bar {
+      display: flex;
+      overflow-x: auto;
+      padding: 8px 20px 16px 20px;
+      gap: 10px;
+      scrollbar-width: none;
+    }
+    .categories-bar::-webkit-scrollbar { display: none; }
+
+    .chip-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 10px 20px;
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .chip-btn.active {
+      background: linear-gradient(135deg, var(--accent-green) 0%, #15be5d 100%);
+      color: #030d07;
+      font-weight: 800;
+      border-color: var(--accent-green);
+      box-shadow: 0 4px 22px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .menu-grid {
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .bento-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      overflow: hidden;
+      backdrop-filter: var(--glass-blur);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+    }
+
+    .bento-card:hover {
+      border-color: rgba(34, 229, 117, 0.4);
+      transform: translateY(-4px);
+    }
+
+    .card-img-wrap {
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .bento-card:hover .card-img-wrap img {
+      transform: scale(1.05);
+    }
+
+    .card-content {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .item-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 6px;
+    }
+
+    .item-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .kbju-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .kbju-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #b0c2b6;
+    }
+
+    .kbju-pill.kcal {
+      background: rgba(244, 196, 48, 0.12);
+      border-color: rgba(244, 196, 48, 0.35);
+      color: var(--accent-gold);
+    }
+
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .price-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--accent-green);
+    }
+
+    .btn-add-premium {
+      background: linear-gradient(135deg, var(--accent-green) 0%, #15bd5c 100%);
+      color: #030d07;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px var(--accent-glow);
+      transition: all 0.2s ease;
+    }
+
+    .floating-cart-wrapper {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      z-index: 999;
+    }
+
+    .floating-cart-btn {
+      background: linear-gradient(135deg, var(--accent-green) 0%, #15a953 100%);
+      color: #030d07;
+      border: none;
+      width: 100%;
+      padding: 18px 24px;
+      border-radius: 22px;
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 12px 35px rgba(34, 229, 117, 0.45);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-logo">BALΩNCE</div>
+    <div class="header-actions">
+      <button class="slides-trigger-btn" onclick="toggleSlides(true)">
+        <span>✨ Презентация</span>
+      </button>
+      <div class="kcal-counter" id="totalKcalBadge">
+        <span>🔥</span>
+        <span id="kcalVal">0 kcal</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Frontend Slides Modal -->
+  <div class="slides-modal" id="slidesModal">
+    <div class="slide-card">
+      <h3 id="slideTitle">1. Наше УТП & КБЖУ</h3>
+      <p id="slideDesc">BALANCE Food — первое фитнес-кафе в Нячанге с профессиональным подсчетом калорий, белков, жиров и углеводов в каждом блюде.</p>
+    </div>
+    <div class="slides-controls">
+      <button class="btn-slide-nav" onclick="prevSlide()">← Назад</button>
+      <button class="btn-slide-nav" onclick="nextSlide()">Далее →</button>
+      <button class="btn-slide-nav" style="background: rgba(255,255,255,0.1); color:#fff;" onclick="toggleSlides(false)">Закрыть ✕</button>
+    </div>
+  </div>
+
+  <div class="hero-banner">
+    <h2>FITNESS • PROTEIN • DETOX</h2>
+    <p>Специализированное фитнес-кафе в Нячанге. Точный подсчет КБЖУ и экспресс-доставка за 30 минут 🛵</p>
+  </div>
+
+  <div class="categories-bar" id="categoriesBar"></div>
+
+  <div class="menu-grid" id="menuGrid"></div>
+
+  <div class="floating-cart-wrapper">
+    <button class="floating-cart-btn" onclick="checkoutOrder()">
+      <span>🛒 Оформить заказ (<span id="cartQty">0</span>)</span>
+      <span id="cartSum">0 VND</span>
+    </button>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    let menuData = null;
+    let cart = [];
+    let currentSlide = 0;
+
+    const slideContent = [
+      { title: "1. Наше УТП & КБЖУ", desc: "BALANCE Food — специализированное фитнес-кафе в Нячанге. Мы высчитываем КБЖУ каждого блюда и напитка." },
+      { title: "2. Фитнес-вафли без глютена", desc: "Уникальная рецептура на тофу или домашнем твороге с начинками из лосося, сочного страуса, вареных креветок или шоколада." },
+      { title: "3. Функциональные бустеры", desc: "Добавляйте Collagen, GABA, Lion's Mane (Ежовик гребенчатый) и Protein в ваши смузи для идеального самочувствия." },
+      { title: "4. Экспресс-доставка по Нячангу", desc: "Доставляем за 30 минут по центру Нячанга, Северному району и Анвьену. Автоматическая оплата VietQR." }
+    ];
+
+    function toggleSlides(show) {
+      document.getElementById('slidesModal').classList.toggle('active', show);
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slideContent.length;
+      updateSlideView();
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slideContent.length) % slideContent.length;
+      updateSlideView();
+    }
+
+    function updateSlideView() {
+      document.getElementById('slideTitle').innerText = slideContent[currentSlide].title;
+      document.getElementById('slideDesc').innerText = slideContent[currentSlide].desc;
+    }
+
+    const customImages = {
+      'waffle-salmon': '/waffle_salmon.png',
+      'green-quinoa-bowl': '/green_bowl.png'
+    };
+
+    async function fetchMenu() {
+      try {
+        const res = await fetch('/api/menu');
+        menuData = await res.json();
+        renderCategories();
+        renderCategoryItems(menuData.categories[0].id);
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
+    function renderCategories() {
+      const container = document.getElementById('categoriesBar');
+      container.innerHTML = menuData.categories.map((c, i) => `
+        <button class="chip-btn ${i === 0 ? 'active' : ''}" onclick="switchCategory('${c.id}', this)">
+          ${c.title_ru}
+        </button>
+      `).join('');
+    }
+
+    function switchCategory(catId, btn) {
+      document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCategoryItems(catId);
+    }
+
+    function renderCategoryItems(catId) {
+      const container = document.getElementById('menuGrid');
+      const cat = menuData.categories.find(c => c.id === catId);
+      if (!cat) return;
+
+      container.innerHTML = cat.items.map(item => {
+        const price = item.price_vnd || item.price_m || 0;
+        const kcal = item.kcal || item.kcal_m || 0;
+        const imgUrl = customImages[item.id];
+
+        return `
+          <div class="bento-card">
+            ${imgUrl ? `
+              <div class="card-img-wrap">
+                <img src="${imgUrl}" alt="${item.title_ru}">
+              </div>
+            ` : ''}
+            
+            <div class="card-content">
+              <div>
+                <div class="item-title">${item.title_ru}</div>
+                ${item.description_ru ? `<div class="item-desc">${item.description_ru}</div>` : ''}
+                
+                <div class="kbju-row">
+                  ${kcal ? `<div class="kbju-pill kcal">🔥 ${kcal} kcal</div>` : ''}
+                  ${item.protein ? `<div class="kbju-pill">💪 Б: ${item.protein}g</div>` : ''}
+                  ${item.fat ? `<div class="kbju-pill">🥑 Ж: ${item.fat}g</div>` : ''}
+                  ${item.carbs ? `<div class="kbju-pill">🌾 У: ${item.carbs}g</div>` : ''}
+                </div>
+              </div>
+
+              <div class="card-bottom">
+                <div class="price-value">${price.toLocaleString()} VND</div>
+                <button class="btn-add-premium" onclick="addItem('${item.id}', ${price}, ${kcal})">
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function addItem(id, price, kcal) {
+      cart.push({ id, price, kcal });
+      if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+      updateCartDisplay();
+    }
+
+    function updateCartDisplay() {
+      document.getElementById('cartQty').innerText = cart.length;
+      const totalVnd = cart.reduce((sum, item) => sum + item.price, 0);
+      const totalKcal = cart.reduce((sum, item) => sum + item.kcal, 0);
+
+      document.getElementById('cartSum').innerText = totalVnd.toLocaleString() + ' VND';
+      document.getElementById('kcalVal').innerText = totalKcal + ' kcal';
+    }
+
+    function checkoutOrder() {
+      if (cart.length === 0) {
+        tg.showAlert("Выберите блюда из меню");
+        return;
+      }
+      tg.sendData(JSON.stringify({ action: 'CHECKOUT', cart }));
+    }
+
+    fetchMenu();
+  </script>
+</body>
+</html>

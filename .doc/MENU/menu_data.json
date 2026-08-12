@@ -1,0 +1,325 @@
+{
+  "categories": [
+    {
+      "id": "fitness-waffles",
+      "title_ru": "Фитнес Вафли (без глютена)",
+      "title_en": "Fitness Waffles (Gluten Free)",
+      "base_options": [
+        { "id": "tofu", "title_ru": "С Тофу", "title_en": "Tofu base" },
+        { "id": "cottage_cheese", "title_ru": "С Творогом", "title_en": "Cottage cheese base" }
+      ],
+      "items": [
+        {
+          "id": "waffle-salmon",
+          "title_ru": "Вафля с лососем",
+          "title_en": "Salmon waffle",
+          "price_vnd": 140000,
+          "kcal": 385,
+          "protein": 6,
+          "fat": 44,
+          "carbs": 14,
+          "fiber": 19
+        },
+        {
+          "id": "waffle-mexican",
+          "title_ru": "Мексиканская вафля",
+          "title_en": "Mexican waffle",
+          "price_vnd": 120000,
+          "kcal": 445,
+          "protein": 6,
+          "fat": 51,
+          "carbs": 16,
+          "fiber": 25
+        },
+        {
+          "id": "waffle-chicken",
+          "title_ru": "Вафля с курицей",
+          "title_en": "Chicken waffle",
+          "price_vnd": 110000,
+          "kcal": 370,
+          "protein": 6,
+          "fat": 46,
+          "carbs": 8,
+          "fiber": 19
+        },
+        {
+          "id": "waffle-julienne",
+          "title_ru": "Вафля Жюльен",
+          "title_en": "Waffle julienne",
+          "price_vnd": 120000,
+          "kcal": 451,
+          "protein": 6,
+          "fat": 58,
+          "carbs": 16,
+          "fiber": 18
+        },
+        {
+          "id": "waffle-shrimp",
+          "title_ru": "Вафля с креветками",
+          "title_en": "Shrimp waffle",
+          "price_vnd": 140000,
+          "kcal": 358,
+          "protein": 6,
+          "fat": 45,
+          "carbs": 8,
+          "fiber": 19
+        },
+        {
+          "id": "waffle-ostrich",
+          "title_ru": "Вафля со страусом",
+          "title_en": "Ostrich waffle",
+          "price_vnd": 130000,
+          "kcal": 365,
+          "protein": 6,
+          "fat": 49,
+          "carbs": 8,
+          "fiber": 19
+        },
+        {
+          "id": "waffle-chocolate",
+          "title_ru": "Шоколадная вафля",
+          "title_en": "Chocolate wafer",
+          "price_vnd": 100000,
+          "kcal": 380,
+          "protein": 6,
+          "fat": 32,
+          "carbs": 10,
+          "fiber": 29
+        }
+      ]
+    },
+    {
+      "id": "balanced-bowls",
+      "title_ru": "Сбалансированные Боулы",
+      "title_en": "Balanced Bowls",
+      "extra_toppings": [
+        { "id": "asparagus", "title_ru": "Спаржа (80g)", "price_vnd": 30000 },
+        { "id": "mushrooms", "title_ru": "Грибы (30g)", "price_vnd": 30000 },
+        { "id": "vegetables", "title_ru": "Овощи (80g)", "price_vnd": 20000 },
+        { "id": "spinach", "title_ru": "Шпинат (60g)", "price_vnd": 20000 },
+        { "id": "broccoli", "title_ru": "Брокколи (100g)", "price_vnd": 30000 },
+        { "id": "egg", "title_ru": "Яйцо (50g)", "price_vnd": 10000 },
+        { "id": "tofu", "title_ru": "Тофу (100g)", "price_vnd": 20000 },
+        { "id": "avocado", "title_ru": "Авокадо (80g)", "price_vnd": 30000 }
+      ],
+      "items": [
+        {
+          "id": "green-quinoa-bowl",
+          "title_ru": "Green Quinoa Bowl",
+          "description_ru": "Киноа, курица sous-vide, авокадо, брокколи, спаржа",
+          "price_vnd": 155000,
+          "weight_g": 500,
+          "kcal": 430,
+          "protein": 6,
+          "fat": 38,
+          "carbs": 16,
+          "fiber": 32
+        },
+        {
+          "id": "tuna-quinoa-bowl",
+          "title_ru": "Tuna Quinoa Bowl",
+          "description_ru": "Киноа, тунец, грибы, шпинат, авокадо",
+          "price_vnd": 159000,
+          "weight_g": 500,
+          "kcal": 430,
+          "protein": 6,
+          "fat": 39,
+          "carbs": 14,
+          "fiber": 28
+        },
+        {
+          "id": "green-salmon-bowl",
+          "title_ru": "Green Salmon Bowl",
+          "description_ru": "Микс зелёных салатов, лосось, авокадо, огурец, спаржа, брокколи, яйцо пашот",
+          "price_vnd": 159000,
+          "weight_g": 520,
+          "kcal": 470,
+          "protein": 6,
+          "fat": 30,
+          "carbs": 22,
+          "fiber": 36
+        },
+        {
+          "id": "power-protein-bowl",
+          "title_ru": "Power Protein Bowl",
+          "description_ru": "Гречка, страус, брокколи, зеленая фасоль, яйцо",
+          "price_vnd": 159000,
+          "weight_g": 540,
+          "kcal": 450,
+          "protein": 6,
+          "fat": 42,
+          "carbs": 17,
+          "fiber": 30
+        },
+        {
+          "id": "salmon-rice-bowl",
+          "title_ru": "Salmon Rice Bowl",
+          "description_ru": "Рис, лосось, шпинат, авокадо, яйцо",
+          "price_vnd": 159000,
+          "weight_g": 520,
+          "kcal": 470,
+          "protein": 6,
+          "fat": 30,
+          "carbs": 22,
+          "fiber": 36
+        },
+        {
+          "id": "shrimp-rice-bowl",
+          "title_ru": "Shrimp Rice Bowl",
+          "description_ru": "Рис, креветки, спаржа, авокадо, овощная смесь",
+          "price_vnd": 149000,
+          "weight_g": 500,
+          "kcal": 410,
+          "protein": 6,
+          "fat": 31,
+          "carbs": 12,
+          "fiber": 38
+        }
+      ]
+    },
+    {
+      "id": "sushi-rolls",
+      "title_ru": "Суши, Роллы & Гунканы",
+      "title_en": "Sushi & Rolls & Guncan",
+      "items": [
+        { "id": "california-shrimp", "title_ru": "California Shrimp Classic", "weight_g": 240, "price_vnd": 140000, "kcal": 310 },
+        { "id": "california-salmon", "title_ru": "California Salmon Style", "weight_g": 240, "price_vnd": 140000, "kcal": 330 },
+        { "id": "california-tuna", "title_ru": "California Tuna Fresh", "weight_g": 250, "price_vnd": 140000, "kcal": 330 },
+        { "id": "philadelphia-oyster-tuna", "title_ru": "Philadelphia Oyster Tuna", "weight_g": 320, "price_vnd": 160000, "kcal": 450 },
+        { "id": "philadelphia-royal-salmon", "title_ru": "Philadelphia Royal Salmon", "weight_g": 330, "price_vnd": 150000, "kcal": 580 },
+        { "id": "philadelphia-shrimp-cream", "title_ru": "Philadelphia Shrimp Cream", "weight_g": 285, "price_vnd": 145000, "kcal": 470 },
+        { "id": "maki-egg", "title_ru": "Maki Egg", "weight_g": 115, "price_vnd": 70000, "kcal": 160 },
+        { "id": "maki-salmon", "title_ru": "Maki Salmon", "weight_g": 115, "price_vnd": 100000, "kcal": 155 },
+        { "id": "maki-tuna", "title_ru": "Maki Tuna", "weight_g": 115, "price_vnd": 90000, "kcal": 132 },
+        { "id": "gunkan-flying-fish-roe", "title_ru": "Gunkan Flying Fish Roe", "weight_g": 50, "price_vnd": 35000, "kcal": 65 },
+        { "id": "gunkan-salmon", "title_ru": "Gunkan Salmon", "weight_g": 50, "price_vnd": 45000, "kcal": 80 },
+        { "id": "gunkan-salmon-roe", "title_ru": "Gunkan Salmon Roe", "weight_g": 50, "price_vnd": 75000, "kcal": 80 },
+        { "id": "salmon-roe-sushi", "title_ru": "Salmon Roe", "weight_g": 40, "price_vnd": 65000, "kcal": 72 },
+        { "id": "nigiri-set", "title_ru": "Nigiri Set", "weight_g": 340, "price_vnd": 230000, "kcal": 510 },
+        { "id": "set-2-nigiri", "title_ru": "Set 2 Nigiri", "weight_g": 210, "price_vnd": 140000, "kcal": 278 },
+        { "id": "set-nigiri-salmon", "title_ru": "Set Nigiri Salmon", "weight_g": 240, "price_vnd": 190000, "kcal": 302 },
+        { "id": "seafood-rice-bowl", "title_ru": "Sea Food Rice Bowl", "weight_g": 400, "price_vnd": 250000, "kcal": 520 }
+      ]
+    },
+    {
+      "id": "fitness-breakfast",
+      "title_ru": "Большой Фитнес-Завтрак",
+      "title_en": "Big Fitness Breakfast",
+      "items": [
+        {
+          "id": "big-fitness-breakfast",
+          "title_ru": "Большой Фитнес-Завтрак",
+          "description_ru": "2 вареных яйца с кремовым желтком, листья салата, спаржа, вафля, свежие огурцы, творожный сыр + выбор белка (Лосось / Куриная грудка / Креветки)",
+          "price_vnd": 140000,
+          "kcal": 560,
+          "protein": 39,
+          "carbs": 29,
+          "fat": 34
+        }
+      ]
+    },
+    {
+      "id": "protein-oat-bowls",
+      "title_ru": "Овсяные Протеиновые Боулы",
+      "title_en": "Oat Protein Bowls",
+      "extra_toppings": [
+        { "id": "granola", "title_ru": "Гранула", "price_vnd": 15000 },
+        { "id": "coconut_shavings", "title_ru": "Кокосовая стружка", "price_vnd": 10000 },
+        { "id": "nuts", "title_ru": "Орехи", "price_vnd": 15000 },
+        { "id": "chia", "title_ru": "Семена чиа", "price_vnd": 10000 },
+        { "id": "berries", "title_ru": "Ягоды", "price_vnd": 15000 },
+        { "id": "peanut_butter", "title_ru": "Арахисовая паста", "price_vnd": 15000 }
+      ],
+      "items": [
+        {
+          "id": "chocolate-protein-bowl",
+          "title_ru": "Шоколадный боул",
+          "description_ru": "Шоколад, арахис, банан, арахисовая паста, солёная карамель, овсянка",
+          "price_vnd": 110000,
+          "kcal": 430,
+          "protein": 36,
+          "carbs": 14,
+          "fat": 39
+        },
+        {
+          "id": "pink-protein-bowl",
+          "title_ru": "Розовый боул",
+          "description_ru": "Драгон-фрут, клубника, кокосовая стружка, гранола, овсянка",
+          "price_vnd": 110000,
+          "kcal": 380,
+          "protein": 35,
+          "carbs": 8,
+          "fat": 42
+        },
+        {
+          "id": "tropical-mango-bowl",
+          "title_ru": "Тропическое Манго",
+          "description_ru": "Манго, банан, кокосовая стружка, семена чиа, овсянка",
+          "price_vnd": 110000,
+          "kcal": 400,
+          "protein": 35,
+          "carbs": 8,
+          "fat": 46
+        },
+        {
+          "id": "classic-protein-bowl",
+          "title_ru": "Классический боул",
+          "description_ru": "Банан, арахисовая паста, арахис, гранола, семена чиа, овсянка",
+          "price_vnd": 110000,
+          "kcal": 420,
+          "protein": 36,
+          "carbs": 13,
+          "fat": 41
+        }
+      ]
+    },
+    {
+      "id": "coffee-drinks",
+      "title_ru": "Кофе, Напитки & Лимонады",
+      "title_en": "Coffee & Drinks",
+      "alt_milk": [
+        { "id": "oat", "title_ru": "Овсяное молоко", "price_vnd": 40000 },
+        { "id": "almond", "title_ru": "Миндальное молоко", "price_vnd": 40000 },
+        { "id": "banana", "title_ru": "Банановое молоко", "price_vnd": 40000 },
+        { "id": "coconut", "title_ru": "Кокосовое молоко", "price_vnd": 40000 }
+      ],
+      "functional_boosters": [
+        { "id": "protein", "title_ru": "BODY — PROTEIN", "price_vnd": 60000 },
+        { "id": "collagen", "title_ru": "SKIN — COLLAGEN", "price_vnd": 30000 },
+        { "id": "lions_mane", "title_ru": "LION'S MANE (Ежовик)", "price_vnd": 30000 },
+        { "id": "gaba", "title_ru": "GABA", "price_vnd": 30000 }
+      ],
+      "items": [
+        { "id": "espresso", "title_ru": "Эспрессо", "price_m": 40000, "price_l": 60000 },
+        { "id": "americano", "title_ru": "Американо", "price_m": 40000, "price_l": 60000 },
+        { "id": "latte", "title_ru": "Латте", "price_m": 60000, "price_l": 90000 },
+        { "id": "cappuccino", "title_ru": "Капучино", "price_m": 60000, "price_l": 90000 },
+        { "id": "peanut-raf", "title_ru": "Арахисовый Раф", "price_m": 90000, "price_l": 135000 },
+        { "id": "salted-caramel-cappuccino", "title_ru": "Капучино соленая карамель", "price_m": 75000, "price_l": 115000 },
+        { "id": "turmeric-latte", "title_ru": "Куркума Латте", "price_m": 50000, "price_l": 75000 },
+        { "id": "matcha-latte", "title_ru": "Матча-Латте", "price_m": 55000, "price_l": 80000 },
+        { "id": "cocoa", "title_ru": "Какао", "price_m": 50000, "price_l": 75000 },
+        { "id": "cold-brew", "title_ru": "Колд-Брю", "price_m": 55000, "price_l": 70000 },
+        { "id": "cold-brew-orange", "title_ru": "Колд-Брю Оранж", "price_m": 65000, "price_l": 85000 },
+        { "id": "matcha-tonic", "title_ru": "Матча-Тоник", "price_m": 75000, "price_l": 115000 },
+        { "id": "bumble-coffee", "title_ru": "Бамбл-Кофе", "price_m": 80000, "price_l": 120000 }
+      ]
+    },
+    {
+      "id": "healthy-smoothies-desserts",
+      "title_ru": "Полезные Смузи & Десерты",
+      "title_en": "Healthy Smoothies & Desserts",
+      "items": [
+        { "id": "healthy-liver", "title_ru": "Здоровая печень (Свекла, морковь, ананас, лайм)", "price_vnd": 65000 },
+        { "id": "womens-health", "title_ru": "Женское здоровье (Банан, клубника, манго, шоколад, семечки)", "price_vnd": 65000 },
+        { "id": "ideal-skin", "title_ru": "Идеальная кожа (Морковь, папайя, куркума, лайм, кокосовое молоко)", "price_vnd": 65000 },
+        { "id": "detox", "title_ru": "Detox (Гуава, сельдерей, лайм, мед, шпинат)", "price_vnd": 65000 },
+        { "id": "tiramisu", "title_ru": "Тирамису", "weight_g": 140, "price_vnd": 70000, "kcal": 197 },
+        { "id": "snickers", "title_ru": "Сникерс", "weight_g": 140, "price_vnd": 70000, "kcal": 190 },
+        { "id": "mango-casserole", "title_ru": "Запеканка с манго", "weight_g": 100, "price_vnd": 100000, "kcal": 290 },
+        { "id": "brownies", "title_ru": "Брауни", "weight_g": 100, "price_vnd": 70000, "kcal": 103 },
+        { "id": "affogato", "title_ru": "Афогато", "price_m": 70000, "price_l": 105000, "kcal": 145 }
+      ]
+    }
+  ]
+}

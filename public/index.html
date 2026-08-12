@@ -214,18 +214,18 @@
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      min-width: 62px;
+      width: 60px;
       cursor: pointer;
       flex-shrink: 0;
     }
 
     .cat-icon-box-white {
-      width: 58px;
-      height: 58px;
+      width: 56px;
+      height: 56px;
       border-radius: 18px;
       background: #ffffff;
-      border: 1px solid #f1f5f9;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -243,8 +243,11 @@
     .cat-card-title {
       font-size: 11px;
       font-weight: 600;
-      color: #94a3b8;
+      color: #64748b;
       text-align: center;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
 
@@ -252,6 +255,7 @@
       color: #0f172a;
       font-weight: 800;
     }
+
 
 
 
@@ -723,14 +727,16 @@
     function renderCategories() {
       const container = document.getElementById('categoriesGrid');
       const icons = ['🧇', '🥗', '🍣', '🥞', '🥣', '☕', '🥤', '🍰'];
+      const shortLabels = ['Вафли', 'Боулы', 'Суши', 'Завтрак', 'Овсянка', 'Кофе', 'Смузи', 'Десерты'];
       
       container.innerHTML = menuData.categories.map((c, i) => `
         <div class="category-card-item ${i === 0 ? 'active' : ''}" onclick="switchCategory('${c.id}', this)">
           <div class="cat-icon-box-white">${icons[i % icons.length]}</div>
-          <div class="cat-card-title">${c.title_ru.split(' ')[0]}</div>
+          <div class="cat-card-title">${shortLabels[i] || c.title_ru.split(' ')[0]}</div>
         </div>
       `).join('');
     }
+
 
 
     function switchCategory(catId, el) {

@@ -4,382 +4,608 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>BALANCE • Premium Fitness & Detox v2</title>
+  <title>BALANCE • Premium Fitness & Detox UI</title>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
-
     :root {
-      --bg-dark: #0b0f0d;
-      --card-bg: #141a17;
-      --card-border: rgba(255, 255, 255, 0.07);
-      --accent-green: #10b981;
-      --accent-green-hover: #059669;
-      --accent-gold: #f59e0b;
-      --text-white: #ffffff;
-      --text-muted: #9ca3af;
-      --text-dim: #6b7280;
+      --bg-main: #f8faf9;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --accent-lime: #84cc16; /* Неоново-салатовый как на макете */
+      --accent-lime-hover: #65a30d;
+      --accent-black: #0f172a;
+      --border-color: #f1f5f9;
+      --shadow-sm: 0 4px 20px rgba(0,0,0,0.04);
+      --shadow-card: 0 10px 30px rgba(0,0,0,0.06);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-white);
+      background-color: var(--bg-main);
+      color: var(--text-main);
       min-height: 100vh;
-      padding-bottom: 120px;
+      padding-bottom: 110px;
     }
 
-    /* Header */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(11, 15, 13, 0.95);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--card-border);
-      padding: 14px 16px;
+    /* Top Navigation Bar */
+    .top-header {
+      background: #ffffff;
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
     }
 
-    .brand-logo {
-      font-family: 'Outfit', sans-serif;
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      color: var(--text-white);
-    }
-    .brand-logo span {
-      color: var(--accent-green);
-    }
-
-    .header-actions {
+    .btn-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      border: none;
       display: flex;
-      gap: 8px;
       align-items: center;
-    }
-
-    .btn-presentation {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
-      color: var(--text-white);
-      padding: 6px 12px;
-      border-radius: 100px;
-      font-size: 12px;
-      font-weight: 600;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--text-main);
       cursor: pointer;
     }
 
-    .kcal-badge {
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      padding: 6px 12px;
-      border-radius: 100px;
-      font-size: 12px;
+    .location-selector {
+      text-align: center;
+    }
+
+    .location-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .location-value {
+      font-size: 14px;
       font-weight: 700;
-      color: var(--accent-green);
+      color: var(--text-main);
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 4px;
     }
 
-    /* Hero */
-    .hero-banner {
-      margin: 16px;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(20, 26, 23, 0.8) 100%);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 16px;
+    .location-value span {
+      color: var(--accent-lime-hover);
     }
 
-    .hero-banner h2 {
+    /* Promo Hero Banner */
+    .hero-container {
+      padding: 16px 20px;
+    }
+
+    .hero-card {
+      background: #1e293b;
+      border-radius: 24px;
+      padding: 20px;
+      color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+    }
+
+    .hero-info {
+      max-width: 55%;
+      z-index: 2;
+    }
+
+    .hero-info h2 {
       font-family: 'Outfit', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--accent-green);
-      margin-bottom: 4px;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 6px;
     }
 
-    .hero-banner p {
+    .hero-info p {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+
+    .btn-hero {
+      background: var(--accent-lime);
+      color: #0f172a;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
       font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    /* Categories Horizontal Bar */
-    .categories-bar {
-      display: flex;
-      overflow-x: auto;
-      padding: 0 16px 14px 16px;
-      gap: 8px;
-      scrollbar-width: none;
-    }
-    .categories-bar::-webkit-scrollbar { display: none; }
-
-    .chip-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      padding: 8px 14px;
-      border-radius: 100px;
-      font-size: 13px;
-      font-weight: 500;
-      white-space: nowrap;
+      font-weight: 800;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
 
-    .chip-btn.active {
-      background: var(--accent-green);
-      color: #000000;
-      font-weight: 700;
-      border-color: var(--accent-green);
-    }
-
-    /* Menu Grid */
-    .menu-grid {
-      padding: 0 16px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-    }
-
-    .food-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
+    .hero-img-wrap {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     }
 
-    .card-img-wrap {
-      width: 100%;
-      height: 190px;
-      overflow: hidden;
-      background: #1a221e;
-    }
-
-    .card-img-wrap img {
+    .hero-img-wrap img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    .card-body {
-      padding: 14px;
+    /* Categories Icons Horizontal Bar */
+    .category-section {
+      padding: 0 20px 16px 20px;
+    }
+
+    .category-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .category-grid::-webkit-scrollbar { display: none; }
+
+    .category-item {
       display: flex;
       flex-direction: column;
-      flex-grow: 1;
-      justify-content: space-between;
-    }
-
-    .item-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-white);
-      margin-bottom: 4px;
-    }
-
-    .item-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.4;
-      margin-bottom: 12px;
-    }
-
-    /* KBJU Badges */
-    .kbju-row {
-      display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       gap: 6px;
-      margin-bottom: 14px;
+      min-width: 68px;
+      cursor: pointer;
     }
 
-    .kbju-pill {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 3px 8px;
-      border-radius: 6px;
+    .cat-icon-box {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      transition: all 0.2s ease;
+      border: 1px solid #f1f5f9;
+    }
+
+    .category-item.active .cat-icon-box {
+      background: var(--accent-lime);
+      border-color: var(--accent-lime);
+      transform: translateY(-2px);
+    }
+
+    .cat-title {
       font-size: 11px;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text-muted);
     }
 
-    .kbju-pill.kcal {
-      background: rgba(245, 158, 11, 0.1);
-      border-color: rgba(245, 158, 11, 0.25);
-      color: var(--accent-gold);
+    .category-item.active .cat-title {
+      color: var(--text-main);
       font-weight: 700;
     }
 
-    /* Price and Button */
-    .card-footer {
+    /* Section Title */
+    .section-header {
+      padding: 0 20px 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 10px;
-      border-top: 1px solid var(--card-border);
     }
 
-    .price-tag {
+    .section-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 800;
-      color: var(--text-white);
+      color: var(--text-main);
     }
 
-    .btn-add {
-      background: var(--accent-green);
-      color: #000000;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
+    .see-more {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-lime-hover);
+      text-decoration: none;
     }
 
-    .btn-add:active {
-      background: var(--accent-green-hover);
+    /* Menu Cards Grid (2 Column Clean UI) */
+    .menu-cards-grid {
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
     }
 
-    /* Cart Bar */
-    .cart-wrapper {
-      position: fixed;
-      bottom: 16px;
-      left: 16px;
-      right: 16px;
-      z-index: 99;
-    }
-
-    .cart-btn {
-      background: var(--accent-green);
-      color: #000000;
-      border: none;
-      width: 100%;
-      padding: 14px 20px;
-      border-radius: 14px;
-      font-size: 15px;
-      font-weight: 800;
+    .product-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 12px;
+      box-shadow: var(--shadow-card);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
-    }
-
-    /* Presentation Modal */
-    .slides-modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(11, 15, 13, 0.96);
-      backdrop-filter: blur(20px);
-      z-index: 999;
-      display: none;
       flex-direction: column;
       justify-content: space-between;
-      padding: 24px 16px;
+      position: relative;
+      cursor: pointer;
     }
 
-    .slides-modal.active { display: flex; }
-
-    .slide-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 24px 16px;
-      text-align: center;
-      margin: auto 0;
+    .fav-heart {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      color: #cbd5e1;
+      font-size: 16px;
+      z-index: 2;
     }
 
-    .slide-card h3 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 20px;
-      color: var(--accent-green);
+    .prod-img-box {
+      width: 100%;
+      height: 120px;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      background: #f8faf9;
+    }
+
+    .prod-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .prod-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .prod-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      line-height: 1.3;
+      height: 28px;
+      overflow: hidden;
+    }
+
+    .kbju-info-mini {
+      display: flex;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #059669;
+      background: #ecfdf5;
+      padding: 3px 6px;
+      border-radius: 6px;
+      width: max-content;
       margin-bottom: 10px;
     }
 
-    .slide-card p {
+    .card-action-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .prod-price {
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .btn-add-lime {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-lime);
+      border: none;
+      color: #0f172a;
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Product Details Modal (As shown in mockup 2) */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: none;
+      align-items: flex-end;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-details-card {
+      background: #ffffff;
+      border-top-left-radius: 32px;
+      border-top-right-radius: 32px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 24px 20px 30px 20px;
+      animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-img-wrap {
+      width: 100%;
+      height: 220px;
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      background: #f8faf9;
+    }
+
+    .modal-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-prod-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .modal-location {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* KBJU 4-Column Table Grid */
+    .kbju-4col-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      background: #f8faf9;
+      padding: 14px;
+      border-radius: 16px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .kbju-col-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .kbju-col-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .modal-desc-heading {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .modal-desc-text {
       font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
+      margin-bottom: 24px;
     }
 
-    .slides-controls {
+    .modal-bottom-row {
       display: flex;
-      gap: 8px;
-      justify-content: center;
+      gap: 12px;
     }
 
-    .btn-slide {
-      background: var(--accent-green);
-      color: #000;
+    .btn-buy-now {
+      flex-grow: 1;
+      background: var(--accent-lime);
+      color: #0f172a;
       border: none;
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 13px;
+      padding: 16px;
+      border-radius: 18px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(132, 204, 22, 0.35);
+    }
+
+    /* Bottom App Tab Bar */
+    .tab-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 900;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
+    }
+
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 20px;
+      color: #94a3b8;
+      cursor: pointer;
+    }
+
+    .tab-item.active {
+      color: var(--accent-lime-hover);
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="brand-logo">BAL<span>Ω</span>NCE</div>
-    <div class="header-actions">
-      <button class="btn-presentation" onclick="toggleSlides(true)">✨ Слайды</button>
-      <div class="kcal-badge">
-        <span>🔥</span>
-        <span id="kcalVal">0 kcal</span>
+  <!-- Top Header Navigation -->
+  <div class="top-header">
+    <button class="btn-circle">🔍</button>
+    <div class="location-selector">
+      <div class="location-label">Локация</div>
+      <div class="location-value"><span>📍</span> Нячанг, Вьетнам ▾</div>
+    </div>
+    <button class="btn-circle" onclick="openSlides()">✨</button>
+  </div>
+
+  <!-- Hero Promo Banner -->
+  <div class="hero-container">
+    <div class="hero-card">
+      <div class="hero-info">
+        <h2>Доставка за 30 минут</h2>
+        <p>Фитнес-вафли и боулы с подсчетом КБЖУ</p>
+        <button class="btn-hero" onclick="scrollToMenu()">Заказать</button>
+      </div>
+      <div class="hero-img-wrap">
+        <img src="/hero_banner.png" alt="BALANCE Fitness Food">
       </div>
     </div>
-  </header>
+  </div>
 
-  <!-- Presentation Modal -->
-  <div class="slides-modal" id="slidesModal">
-    <div class="slide-card">
-      <h3 id="slideTitle">1. Наше УТП & КБЖУ</h3>
-      <p id="slideDesc">BALANCE Food — первое фитнес-кафе в Нячанге с профессиональным подсчетом калорий, белков, жиров и углеводов в каждом блюде.</p>
-    </div>
-    <div class="slides-controls">
-      <button class="btn-slide" onclick="prevSlide()">← Назад</button>
-      <button class="btn-slide" onclick="nextSlide()">Далее →</button>
-      <button class="btn-slide" style="background: rgba(255,255,255,0.1); color:#fff;" onclick="toggleSlides(false)">✕</button>
+  <!-- Categories Horizontal Scroll -->
+  <div class="category-section">
+    <div class="category-grid" id="categoriesGrid">
+      <div class="category-item active">
+        <div class="cat-icon-box">🧇</div>
+        <div class="cat-title">Вафли</div>
+      </div>
+      <div class="category-item">
+        <div class="cat-icon-box">🥗</div>
+        <div class="cat-title">Боулы</div>
+      </div>
+      <div class="category-item">
+        <div class="cat-icon-box">🍣</div>
+        <div class="cat-title">Суши</div>
+      </div>
+      <div class="category-item">
+        <div class="cat-icon-box">☕</div>
+        <div class="cat-title">Кофе</div>
+      </div>
+      <div class="category-item">
+        <div class="cat-icon-box">🥤</div>
+        <div class="cat-title">Смузи</div>
+      </div>
     </div>
   </div>
 
-  <div class="hero-banner">
-    <h2>FITNESS • PROTEIN • DETOX</h2>
-    <p>Специализированное фитнес-кафе в Нячанге. Точный подсчет КБЖУ и экспресс-доставка за 30 минут 🛵</p>
+  <!-- Section Title -->
+  <div class="section-header">
+    <div class="section-title" id="sectionTitle">Рекомендуем вам</div>
+    <a href="#" class="see-more">Все</a>
   </div>
 
-  <div class="categories-bar" id="categoriesBar"></div>
+  <!-- 2 Column Clean Products Grid -->
+  <div class="menu-cards-grid" id="menuCardsGrid"></div>
 
-  <div class="menu-grid" id="menuGrid"></div>
+  <!-- Bottom Mobile Tab Bar -->
+  <div class="tab-bar">
+    <div class="tab-item active">🏠</div>
+    <div class="tab-item">🤍</div>
+    <div class="tab-item">📋</div>
+    <div class="tab-item" onclick="openCartView()" style="position: relative;">
+      🛍️
+      <span id="tabCartBadge" style="position: absolute; top: -4px; right: -4px; background: var(--accent-lime); color: #000; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 10px; display: none;">0</span>
+    </div>
+    <div class="tab-item">👤</div>
+  </div>
 
-  <div class="cart-wrapper">
-    <button class="cart-btn" onclick="checkoutOrder()">
-      <span>🛒 Корзина (<span id="cartQty">0</span>)</span>
-      <span id="cartSum">0 VND</span>
-    </button>
+  <!-- Product Details Modal Window (Mockup 2 & 3) -->
+  <div class="modal-overlay" id="detailsModal">
+    <div class="modal-details-card">
+      <div class="modal-top-bar">
+        <button class="btn-circle" onclick="closeDetailsModal()">←</button>
+        <div style="font-weight: 700; font-size: 16px;">Детали блюда</div>
+        <button class="btn-circle">🤍</button>
+      </div>
+
+      <div class="modal-img-wrap">
+        <img id="modalImg" src="" alt="">
+      </div>
+
+      <div class="modal-prod-title" id="modalTitle">--</div>
+      <div class="modal-location">📍 Нячанг, BALANCE Cafe</div>
+
+      <!-- KBJU 4-Column Table -->
+      <div class="kbju-4col-grid">
+        <div>
+          <div class="kbju-col-val" id="modalKcal">0</div>
+          <div class="kbju-col-label">ккал</div>
+        </div>
+        <div>
+          <div class="kbju-col-val" id="modalP">0g</div>
+          <div class="kbju-col-label">белки</div>
+        </div>
+        <div>
+          <div class="kbju-col-val" id="modalF">0g</div>
+          <div class="kbju-col-label">жиры</div>
+        </div>
+        <div>
+          <div class="kbju-col-val" id="modalC">0g</div>
+          <div class="kbju-col-label">углеводы</div>
+        </div>
+      </div>
+
+      <div class="modal-desc-heading">Описание</div>
+      <div class="modal-desc-text" id="modalDesc">--</div>
+
+      <div class="modal-bottom-row">
+        <button class="btn-buy-now" id="modalBuyBtn" onclick="addCurrentModalToCart()">Добавить в корзину</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -388,33 +614,7 @@
 
     let menuData = null;
     let cart = [];
-    let currentSlide = 0;
-
-    const slideContent = [
-      { title: "1. Наше УТП & КБЖУ", desc: "BALANCE Food — специализированное фитнес-кафе в Нячанге. Мы высчитываем КБЖУ каждого блюда и напитка." },
-      { title: "2. Фитнес-вафли без глютена", desc: "Уникальная рецептура на тофу или домашнем твороге с начинками из лосося, сочного страуса, вареных креветок или шоколада." },
-      { title: "3. Функциональные бустеры", desc: "Добавляйте Collagen, GABA, Lion's Mane (Ежовик гребенчатый) и Protein в ваши смузи для идеального самочувствия." },
-      { title: "4. Экспресс-доставка по Нячангу", desc: "Доставляем за 30 минут по центру Нячанга, Северному району и Анвьену. Автоматическая оплата VietQR." }
-    ];
-
-    function toggleSlides(show) {
-      document.getElementById('slidesModal').classList.toggle('active', show);
-    }
-
-    function nextSlide() {
-      currentSlide = (currentSlide + 1) % slideContent.length;
-      updateSlideView();
-    }
-
-    function prevSlide() {
-      currentSlide = (currentSlide - 1 + slideContent.length) % slideContent.length;
-      updateSlideView();
-    }
-
-    function updateSlideView() {
-      document.getElementById('slideTitle').innerText = slideContent[currentSlide].title;
-      document.getElementById('slideDesc').innerText = slideContent[currentSlide].desc;
-    }
+    let activeItemForModal = null;
 
     const customImages = {
       'waffle-salmon': '/waffle_salmon.png',
@@ -428,8 +628,6 @@
     };
 
     async function fetchMenu() {
-
-
       try {
         const res = await fetch('/api/menu');
         menuData = await res.json();
@@ -441,84 +639,124 @@
     }
 
     function renderCategories() {
-      const container = document.getElementById('categoriesBar');
+      const container = document.getElementById('categoriesGrid');
+      const icons = ['🧇', '🥗', '🍣', '🥞', '🥣', '☕', '🥤', '🍰'];
+      
       container.innerHTML = menuData.categories.map((c, i) => `
-        <button class="chip-btn ${i === 0 ? 'active' : ''}" onclick="switchCategory('${c.id}', this)">
-          ${c.title_ru}
-        </button>
+        <div class="category-item ${i === 0 ? 'active' : ''}" onclick="switchCategory('${c.id}', this)">
+          <div class="cat-icon-box">${icons[i % icons.length]}</div>
+          <div class="cat-title">${c.title_ru.split(' ')[0]}</div>
+        </div>
       `).join('');
     }
 
-    function switchCategory(catId, btn) {
-      document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+    function switchCategory(catId, el) {
+      document.querySelectorAll('.category-item').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
       renderCategoryItems(catId);
     }
 
     function renderCategoryItems(catId) {
-      const container = document.getElementById('menuGrid');
+      const container = document.getElementById('menuCardsGrid');
       const cat = menuData.categories.find(c => c.id === catId);
       if (!cat) return;
+
+      document.getElementById('sectionTitle').innerText = cat.title_ru;
 
       container.innerHTML = cat.items.map(item => {
         const price = item.price_vnd || item.price_m || 0;
         const kcal = item.kcal || item.kcal_m || 0;
-        const imgUrl = customImages[item.id];
+        const imgUrl = customImages[item.id] || '/waffle_salmon.png';
 
         return `
-          <div class="food-card">
-            ${imgUrl ? `
-              <div class="card-img-wrap">
-                <img src="${imgUrl}" alt="${item.title_ru}">
-              </div>
-            ` : ''}
+          <div class="product-card" onclick="openDetailsModal('${item.id}')">
+            <div class="fav-heart">🤍</div>
+            <div class="prod-img-box">
+              <img src="${imgUrl}" alt="${item.title_ru}">
+            </div>
             
-            <div class="card-body">
-              <div>
-                <div class="item-title">${item.title_ru}</div>
-                ${item.description_ru ? `<div class="item-desc">${item.description_ru}</div>` : ''}
-                
-                <div class="kbju-row">
-                  ${kcal ? `<div class="kbju-pill kcal">🔥 ${kcal} kcal</div>` : ''}
-                  ${item.protein ? `<div class="kbju-pill">Б: ${item.protein}g</div>` : ''}
-                  ${item.fat ? `<div class="kbju-pill">Ж: ${item.fat}g</div>` : ''}
-                  ${item.carbs ? `<div class="kbju-pill">У: ${item.carbs}g</div>` : ''}
-                </div>
-              </div>
+            <div class="prod-name">${item.title_ru}</div>
+            <div class="prod-desc">${item.description_ru || 'Фитнес блюдо BALANCE'}</div>
+            
+            <div class="kbju-info-mini">🔥 ${kcal} kcal</div>
 
-              <div class="card-footer">
-                <div class="price-tag">${price.toLocaleString()} VND</div>
-                <button class="btn-add" onclick="addItem('${item.id}', ${price}, ${kcal})">
-                  + В корзину
-                </button>
-              </div>
+            <div class="card-action-row">
+              <div class="prod-price">${price.toLocaleString()} VND</div>
+              <button class="btn-add-lime" onclick="event.stopPropagation(); addToCart('${item.id}', ${price}, ${kcal})">+</button>
             </div>
           </div>
         `;
       }).join('');
     }
 
-    function addItem(id, price, kcal) {
+    function openDetailsModal(itemId) {
+      let found = null;
+      menuData.categories.forEach(c => {
+        const item = c.items.find(i => i.id === itemId);
+        if (item) found = item;
+      });
+
+      if (!found) return;
+      activeItemForModal = found;
+
+      const price = found.price_vnd || found.price_m || 0;
+      const kcal = found.kcal || found.kcal_m || 0;
+      const imgUrl = customImages[found.id] || '/waffle_salmon.png';
+
+      document.getElementById('modalImg').src = imgUrl;
+      document.getElementById('modalTitle').innerText = found.title_ru;
+      document.getElementById('modalKcal').innerText = kcal;
+      document.getElementById('modalP').innerText = (found.protein || 6) + 'g';
+      document.getElementById('modalF').innerText = (found.fat || 12) + 'g';
+      document.getElementById('modalC').innerText = (found.carbs || 35) + 'g';
+      document.getElementById('modalDesc').innerText = found.description_ru || 'Полезное фитнес-блюдо BALANCE с точным КБЖУ.';
+      document.getElementById('modalBuyBtn').innerText = `Добавить за ${price.toLocaleString()} VND`;
+
+      document.getElementById('detailsModal').classList.add('active');
+    }
+
+    function closeDetailsModal() {
+      document.getElementById('detailsModal').classList.remove('active');
+    }
+
+    function addToCart(id, price, kcal) {
       cart.push({ id, price, kcal });
       if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-      updateCartDisplay();
+      updateCartBadge();
     }
 
-    function updateCartDisplay() {
-      document.getElementById('cartQty').innerText = cart.length;
-      const totalVnd = cart.reduce((sum, item) => sum + item.price, 0);
-      const totalKcal = cart.reduce((sum, item) => sum + item.kcal, 0);
-
-      document.getElementById('cartSum').innerText = totalVnd.toLocaleString() + ' VND';
-      document.getElementById('kcalVal').innerText = totalKcal + ' kcal';
+    function addCurrentModalToCart() {
+      if (!activeItemForModal) return;
+      const price = activeItemForModal.price_vnd || activeItemForModal.price_m || 0;
+      const kcal = activeItemForModal.kcal || activeItemForModal.kcal_m || 0;
+      addToCart(activeItemForModal.id, price, kcal);
+      closeDetailsModal();
     }
 
-    function checkoutOrder() {
+    function updateCartBadge() {
+      const badge = document.getElementById('tabCartBadge');
+      if (cart.length > 0) {
+        badge.innerText = cart.length;
+        badge.style.display = 'block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    function openCartView() {
       if (cart.length === 0) {
-        tg.showAlert("Выберите блюда из меню");
+        tg.showAlert("Ваша корзина пуста");
         return;
       }
       tg.sendData(JSON.stringify({ action: 'CHECKOUT', cart }));
+    }
+
+    function scrollToMenu() {
+      document.getElementById('menuCardsGrid').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function openSlides() {
+      tg.showAlert("Презентация BALANCE: Фитнес-питание в Нячанге с доставкой за 30 минут.");
     }
 
     fetchMenu();

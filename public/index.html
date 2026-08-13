@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
@@ -34,23 +35,29 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
     body {
-      background-color: #0f172a; /* Фон в стиле десктоп-презентации */
+      background-color: #0f172a; /* Темный фон десктоп-презентации */
       color: var(--text-main);
-      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px 0;
     }
 
     /* Мобильный контейнер (iPhone Wrapper для ПК, растягивается на мобиле) */
     .app-viewport {
       width: 100%;
-      max-width: 430px; /* Идеальная шина iPhone 15 Pro Max */
-      min-height: 844px;
+      max-width: 412px;
+      height: calc(100vh - 32px);
+      max-height: 844px;
       background-color: var(--bg-main);
-      border-radius: 40px;
+      border-radius: 36px;
       box-shadow: 0 25px 60px rgba(0,0,0,0.5);
       position: relative;
       overflow: hidden;
@@ -60,46 +67,49 @@
 
     /* Для мобильных устройств — растягиваем на весь экран */
     @media (max-width: 480px) {
+      html, body {
+        overflow: auto;
+      }
       body {
-        padding: 0;
         background-color: var(--bg-main);
       }
       .app-viewport {
         max-width: 100%;
-        min-height: 100vh;
+        height: 100vh;
+        max-height: none;
         border-radius: 0;
         box-shadow: none;
       }
     }
 
-    /* Top Navigation Bar */
+    /* Clean Minimal Top Header */
     .top-header {
       background: #ffffff;
-      padding: 14px 18px;
+      padding: 12px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+      border-bottom: 1px solid #f1f5f9;
     }
 
     .btn-circle {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: #f1f5f9;
-      border: none;
+      background: #f8faf9;
+      border: 1px solid #f1f5f9;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 15px;
       color: var(--text-main);
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s;
     }
-    .btn-circle:active { background: #e2e8f0; }
+    .btn-circle:active { transform: scale(0.92); background: #f1f5f9; }
 
     .location-selector {
       text-align: center;
@@ -108,26 +118,38 @@
 
     .location-label {
       font-size: 10px;
-      color: var(--text-muted);
+      color: #94a3b8;
       font-weight: 500;
     }
 
     .location-value {
       font-size: 13px;
-      font-weight: 700;
-      color: var(--text-main);
+      font-weight: 800;
+      color: #0f172a;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 3px;
     }
-    .location-value span { color: var(--accent-lime-hover); }
+    .location-value span { color: #65a30d; }
+
+    /* Bounce Keyframe Animation for Cart Badge */
+    @keyframes elasticBounce {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.45); }
+      70% { transform: scale(0.88); }
+      100% { transform: scale(1); }
+    }
+
+    .tab-badge.bounce {
+      animation: elasticBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
 
     /* Main Scrollable Content Area */
     .content-area {
       flex-grow: 1;
       overflow-y: auto;
-      padding-bottom: 90px;
+      padding-bottom: 140px;
       scrollbar-width: none;
     }
     .content-area::-webkit-scrollbar { display: none; }
@@ -303,47 +325,35 @@
       text-decoration: none;
     }
 
-    /* 2 Column Clean Mobile Grid */
+    /* 2 Column Clean Mobile Grid (Exact Replica of Samokat Sample) */
     .menu-cards-grid {
-      padding: 0 16px;
+      padding: 0 14px;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
 
     .product-card {
       background: #ffffff;
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 10px;
-      box-shadow: var(--shadow-card);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      position: relative;
       cursor: pointer;
-      transition: transform 0.2s;
+      position: relative;
     }
 
     .product-card:active { transform: scale(0.98); }
 
-    .fav-heart {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      color: #cbd5e1;
-      font-size: 14px;
-      z-index: 2;
-      transition: color 0.2s;
-    }
-    .fav-heart.active { color: #ef4444; }
-
     .prod-img-box {
       width: 100%;
-      height: 100px;
-      border-radius: 12px;
+      height: 125px;
+      border-radius: 16px;
       overflow: hidden;
       margin-bottom: 8px;
-      background: #f8faf9;
+      background: #f1f5f9;
+      position: relative;
     }
 
     .prod-img-box img {
@@ -352,63 +362,485 @@
       object-fit: cover;
     }
 
-    .prod-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 2px;
-      line-height: 1.2;
+    /* Samokat Pill Badges over Image */
+    .card-top-badges {
+      position: absolute;
+      bottom: 8px; left: 8px;
+      display: flex;
+      gap: 4px;
+      z-index: 5;
+      pointer-events: none;
     }
 
-    .prod-desc {
+    .badge-tag {
       font-size: 10px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      line-height: 1.2;
-      height: 24px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 12px;
+      background: #1e293b;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .badge-kcal {
+      position: absolute;
+      top: 8px; right: 8px;
+      background: rgba(15, 23, 42, 0.6);
+      color: #ffffff;
+      backdrop-filter: blur(4px);
+    }
+
+    .fav-heart {
+      position: absolute;
+      top: 8px; left: 8px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 12px;
+      z-index: 6;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .fav-heart.active { color: #ef4444; background: #ffffff; }
+
+    .prod-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.25;
+      margin-bottom: 2px;
+      height: 30px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .kbju-info-mini {
-      display: flex;
-      gap: 3px;
-      font-size: 9px;
-      font-weight: 700;
-      color: #059669;
-      background: #ecfdf5;
-      padding: 2px 5px;
-      border-radius: 5px;
-      width: max-content;
-      margin-bottom: 8px;
+    .prod-weight {
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 500;
+      margin-bottom: 6px;
     }
 
+    /* Samokat Pill Price & Add Button Bar (BALANCE Fresh Lime Palette) */
     .card-action-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-top: auto;
+    }
+
+    .samokat-price-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f7fee7;
+      border: 1px solid #ecfdf5;
+      padding: 4px 10px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .samokat-price-pill:hover {
+      background: #dcfce7;
+    }
+
+    .prod-old-price {
+      font-size: 10px;
+      color: #94a3b8;
+      text-decoration: line-through;
+      font-weight: 600;
     }
 
     .prod-price {
       font-family: 'Outfit', sans-serif;
       font-size: 13px;
       font-weight: 800;
-      color: var(--text-main);
+      color: #0f172a;
     }
 
-    .btn-add-lime {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--accent-lime);
-      border: none;
-      color: #0f172a;
-      font-size: 16px;
+    .btn-add-plus {
+      color: #65a30d;
+      font-size: 18px;
       font-weight: 800;
+      line-height: 1;
+      margin-left: 2px;
+    }
+
+    /* In-Cart State Machine Stepper Button */
+    .btn-stepper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 4px 8px;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+    }
+
+    .btn-stepper button {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .btn-stepper span {
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    /* Floating Sticky Bottom Cart Bar (Samokat Pattern) */
+    .floating-cart-bar {
+      position: absolute;
+      bottom: 74px; left: 14px; right: 14px;
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: 18px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 850;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.3);
       cursor: pointer;
+      transform: translateY(120px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .floating-cart-bar.active {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .floating-cart-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .floating-cart-badge {
+      background: var(--accent-lime);
+      color: #0f172a;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .floating-cart-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .floating-cart-sum {
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .floating-cart-time {
+      font-size: 10px;
+      color: #94a3b8;
+    }
+
+    .floating-cart-btn {
+      background: var(--accent-lime);
+      color: #0f172a;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Modal Modifiers & Selectors */
+    .modifier-group {
+      margin-bottom: 16px;
+    }
+
+    .modifier-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .segmented-control {
+      display: flex;
+      background: #f1f5f9;
+      padding: 3px;
+      border-radius: 12px;
+      gap: 4px;
+    }
+
+    .segmented-item {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 9px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .segmented-item.active {
+      background: #ffffff;
+      color: var(--text-main);
+      font-weight: 800;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .modifier-chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .modifier-chip {
+      background: #f8faf9;
+      border: 1px solid #e2e8f0;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .modifier-chip.active {
+      border-color: var(--accent-lime);
+      background: #f7fee7;
+      color: #3f6212;
+      font-weight: 700;
+    }
+
+    /* iOS Style Clean Profile Screen */
+    .profile-header-center {
+      text-align: center;
+      padding: 16px 0 24px 0;
+    }
+
+    .profile-avatar-wrap {
+      position: relative;
+      width: 86px;
+      height: 86px;
+      margin: 0 auto 12px auto;
+    }
+
+    .profile-avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffffff;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      background: #f1f5f9;
+    }
+
+    .profile-verified-badge {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      background: var(--accent-lime);
+      color: #0f172a;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      border: 2px solid #ffffff;
+    }
+
+    .profile-user-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .profile-user-email {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .profile-menu-group {
+      background: #ffffff;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      margin-bottom: 20px;
+    }
+
+    .profile-menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 18px;
+      border-bottom: 1px solid #f8faf9;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .profile-menu-item * {
+      pointer-events: none;
+    }
+
+    .profile-menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .profile-menu-item:active {
+      background: #f8faf9;
+    }
+
+    .profile-item-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .profile-item-icon {
+      width: 24px;
+      height: 24px;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .profile-item-arrow {
+      color: #cbd5e1;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    /* Free Delivery Progress & Upsell Carousel */
+    .free-delivery-progress {
+      background: #ffffff;
+      padding: 12px 14px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .progress-track {
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent-lime);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .upsell-carousel {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
+    }
+    .upsell-carousel::-webkit-scrollbar { display: none; }
+
+    .upsell-card {
+      width: 120px;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 8px;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .upsell-img {
+      width: 100%; height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-bottom: 6px;
+    }
+
+    /* Order Tracker 4-Step Timeline */
+    .tracker-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 20px 0;
+    }
+
+    .tracker-step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .step-icon-circle {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #64748b;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .tracker-step-item.active .step-icon-circle {
+      background: var(--accent-lime);
+      color: #0f172a;
+    }
+
+    .step-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .tracker-step-item.active .step-label {
+      color: var(--text-main);
+      font-weight: 800;
     }
 
     /* Modal Sheet Overlay */
@@ -526,44 +958,133 @@
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 6px 18px rgba(132, 204, 22, 0.3);
+      transition: all 0.3s ease;
     }
 
-    /* Bottom App Tab Bar */
+    /* Scooter Order Checkout Button Morphing Animation */
+    .btn-buy-now.checkout-animating {
+      background: #0f172a !important;
+      color: transparent !important;
+      position: relative;
+      overflow: hidden;
+      pointer-events: none;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.4);
+    }
+
+    .btn-buy-now.checkout-animating::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 2px;
+      background: repeating-linear-gradient(90deg, #ffffff 0, #ffffff 10px, transparent 10px, transparent 20px);
+      transform: translateY(-50%);
+      opacity: 0.6;
+    }
+
+    .scooter-anim-runner {
+      position: absolute;
+      top: 50%;
+      left: -60px;
+      transform: translateY(-50%);
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      animation: driveScooter 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      z-index: 5;
+    }
+
+    .scooter-anim-bag {
+      font-size: 10px;
+      background: var(--accent-lime);
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: 800;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    @keyframes driveScooter {
+      0% { left: -60px; opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { left: calc(100% + 30px); opacity: 0; }
+    }
+
+    /* Bottom App Tab Bar (Exact Replica of Sample 2) */
     .tab-bar {
       position: absolute;
       bottom: 0; left: 0; right: 0;
       background: #ffffff;
       border-top: 1px solid #f1f5f9;
-      padding: 8px 16px;
+      padding: 10px 24px 14px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 900;
+      z-index: 990;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+    }
+
+    @media (max-width: 480px) {
+      .tab-bar {
+        border-radius: 0;
+      }
     }
 
     .tab-item {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 2px;
-      font-size: 18px;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
       color: #94a3b8;
       cursor: pointer;
       position: relative;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .tab-item.active { color: var(--accent-lime-hover); }
+    .tab-item svg, .tab-item path {
+      pointer-events: none;
+    }
+
+    .tab-item svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.2s;
+    }
+
+    .tab-item.active {
+      color: #0f172a;
+      background: #f8faf9;
+    }
+
+    .tab-item.active svg {
+      stroke: #0f172a;
+    }
 
     .tab-badge {
       position: absolute;
-      top: -4px; right: -6px;
+      top: 0px; 
+      right: 0px;
       background: var(--accent-lime);
-      color: #000;
+      color: #0f172a;
       font-size: 9px;
       font-weight: 800;
-      padding: 1px 5px;
-      border-radius: 8px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
       display: none;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
   </style>
 </head>
@@ -571,11 +1092,11 @@
 
   <div class="app-viewport">
 
-    <!-- Top Header Navigation -->
+    <!-- Clean Minimal Top Header Navigation -->
     <div class="top-header">
       <button class="btn-circle" onclick="searchAlert()">🔍</button>
       <div class="location-selector" onclick="selectLocationAlert()">
-        <div class="location-label">Локация</div>
+        <div class="location-label">Локация доставки</div>
         <div class="location-value"><span>📍</span> Нячанг, Вьетнам ▾</div>
       </div>
       <button class="btn-circle" onclick="openReferralAlert()">🎁</button>
@@ -584,49 +1105,292 @@
     <!-- Scrollable Content Area -->
     <div class="content-area">
 
-      <!-- Hero Promo Banner -->
-      <div class="hero-container">
-        <div class="hero-card">
-          <div class="hero-info">
-            <h2>Доставка за 30 минут</h2>
-            <p>Фитнес-вафли и боулы с подсчетом КБЖУ</p>
-            <button class="btn-hero" onclick="scrollToMenu()">Заказать</button>
+      <!-- Home Main View -->
+      <div id="viewHome" class="app-view active">
+        <!-- Hero Promo Banner -->
+        <div class="hero-container">
+          <div class="hero-card">
+            <div class="hero-info">
+              <h2>Доставка за 30 минут</h2>
+              <p>Фитнес-вафли и боулы с подсчетом КБЖУ</p>
+              <button class="btn-hero" onclick="scrollToMenu()">Заказать</button>
+            </div>
+            <div class="hero-img-wrap">
+              <img src="/hero_banner.png" alt="BALANCE Fitness Food">
+            </div>
           </div>
-          <div class="hero-img-wrap">
-            <img src="/hero_banner.png" alt="BALANCE Fitness Food">
+        </div>
+
+        <!-- Categories Horizontal Scroll -->
+        <div class="category-section">
+          <div class="category-grid" id="categoriesGrid"></div>
+        </div>
+
+        <!-- Section Title -->
+        <div class="section-header">
+          <div class="section-title" id="sectionTitle">Рекомендуем вам</div>
+          <a href="#" class="see-more" onclick="showAllAlert(event)">Все</a>
+        </div>
+
+        <!-- 2 Column Clean Mobile Grid -->
+        <div class="menu-cards-grid" id="menuCardsGrid"></div>
+      </div>
+
+      <!-- Favorites View -->
+      <div id="viewFav" class="app-view" style="display: none; padding: 16px;">
+        <div class="section-title" style="margin-bottom: 14px;">❤️ Избранные блюда</div>
+        <div id="favCardsGrid" class="menu-cards-grid"></div>
+      </div>
+
+      <!-- Orders View -->
+      <div id="viewOrders" class="app-view" style="display: none; padding: 16px;">
+        <div class="section-title" style="margin-bottom: 14px;">📋 История заказов</div>
+        <div class="product-card" style="margin-bottom: 12px; padding: 16px;">
+          <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+            <span>Заказ #1042 • 12 августа</span>
+            <span style="color: #059669; font-weight: 700;">Выполнен 🛵</span>
+          </div>
+          <div style="font-weight: 700; font-size: 14px; margin-bottom: 6px;">🧇 Вафля с соленым лососем + ☕ Американо</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <div style="font-weight: 800; font-size: 14px;">190,000 VND</div>
+            <button class="btn-hero" onclick="reorderLast()">Повторить заказ 🔄</button>
           </div>
         </div>
       </div>
 
-      <!-- Categories Horizontal Scroll -->
-      <div class="category-section">
-        <div class="category-grid" id="categoriesGrid"></div>
+      <!-- Cart View -->
+      <div id="viewCart" class="app-view" style="display: none; padding: 16px;">
+        <div class="section-title" style="margin-bottom: 14px;">🛍️ Ваша корзина</div>
+
+        <!-- Free Delivery Progress Bar -->
+        <div class="free-delivery-progress" id="freeDeliveryBox">
+          <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700;">
+            <span id="freeDeliveryText">Добавьте ещё на 60,000 VND для бесплатной доставки 🛵</span>
+            <span id="freeDeliveryPercent">70%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-bar-fill" id="freeDeliveryFill"></div>
+          </div>
+        </div>
+
+        <div id="cartItemsList" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;"></div>
+
+        <div id="cartEmptyState" style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+          <div style="font-size: 40px; margin-bottom: 10px;">🛒</div>
+          <div style="font-weight: 700; font-size: 15px; color: var(--text-main);">Корзина пуста</div>
+          <div style="font-size: 12px; margin-top: 4px;">Выберите блюда из меню, чтобы оформить заказ</div>
+        </div>
+
+        <!-- Upsell Carousel -->
+        <div id="upsellSection" style="display: none; margin-bottom: 16px;">
+          <div class="section-title" style="font-size: 13px; margin-bottom: 8px;">Добавьте к заказу ⚡</div>
+          <div class="upsell-carousel">
+            <div class="upsell-card">
+              <img src="/waffle_chocolate.png" class="upsell-img" alt="Шоколадный батончик">
+              <div style="font-size: 10px; font-weight: 700; margin-bottom: 2px;">Шоколадный мусс</div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                <span style="font-size: 11px; font-weight: 800;">50,000 ₫</span>
+                <button class="btn-add-lime" style="width: 22px; height: 22px; font-size: 12px;" onclick="addToCart('waffle-chocolate', 50000, 200); renderCartView();">+</button>
+              </div>
+            </div>
+            <div class="upsell-card">
+              <img src="/green_bowl.png" class="upsell-img" alt="Кокосовая вода">
+              <div style="font-size: 10px; font-weight: 700; margin-bottom: 2px;">Свежий Кокос</div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                <span style="font-size: 11px; font-weight: 800;">35,000 ₫</span>
+                <button class="btn-add-lime" style="width: 22px; height: 22px; font-size: 12px;" onclick="addToCart('green-quinoa-bowl', 35000, 110); renderCartView();">+</button>
+              </div>
+            </div>
+            <div class="upsell-card">
+              <img src="/hero_banner.png" class="upsell-img" alt="Колд-брю">
+              <div style="font-size: 10px; font-weight: 700; margin-bottom: 2px;">Колд-Брю Кофе</div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                <span style="font-size: 11px; font-weight: 800;">45,000 ₫</span>
+                <button class="btn-add-lime" style="width: 22px; height: 22px; font-size: 12px;" onclick="addToCart('waffle-salmon', 45000, 15); renderCartView();">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="cartSummaryBox" style="display: none; background: #ffffff; padding: 16px; border-radius: 18px; box-shadow: var(--shadow-card);">
+          <!-- Total KBJU Box -->
+          <div style="background: #f8faf9; padding: 10px; border-radius: 12px; margin-bottom: 12px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;">Общая ценность заказа:</div>
+            <div style="font-size: 12px; font-weight: 800; color: #059669;" id="cartTotalKbjuDetail">🔥 0 kcal | Б: 0g | Ж: 0g | У: 0g</div>
+          </div>
+
+          <!-- Delivery Info Form for Courier -->
+          <div style="background: #f8faf9; padding: 14px; border-radius: 14px; margin-bottom: 16px;">
+            <div style="font-size: 11px; font-weight: 800; color: #0f172a; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;">
+              <span>🛵</span> Данные для курьера и доставки:
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div>
+                <label style="font-size: 10px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 3px;">Адрес (улица, отель, номер комнаты/апт):</label>
+                <input type="text" id="cartAddressInput" placeholder="Нячанг, ул. Tran Phu 12, отель/комната 1402" value="Центр Нячанга, ул. Tran Phu 12" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 600; background: #ffffff;">
+              </div>
+
+              <div style="display: flex; gap: 8px;">
+                <div style="flex: 1;">
+                  <label style="font-size: 10px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 3px;">Телефон / WhatsApp:</label>
+                  <input type="text" id="cartPhoneInput" placeholder="+84 90 123 4567" value="+84 90 123 4567" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 600; background: #ffffff;">
+                </div>
+                <div style="flex: 1;">
+                  <label style="font-size: 10px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 3px;">Сдача с купюры:</label>
+                  <input type="text" id="cartChangeInput" placeholder="500,000 ₫" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 600; background: #ffffff;">
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size: 10px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 3px;">Комментарий курьеру:</label>
+                <input type="text" id="cartCommentInput" placeholder="Оставить на ресепшн / без приборов..." style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 500; background: #ffffff;">
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px;">
+            <span>Сумма к оплате:</span>
+            <strong id="cartTotalSum" style="font-family: 'Outfit', sans-serif; font-size: 16px;">0 VND</strong>
+          </div>
+
+          <!-- Payment Options -->
+          <div style="margin-bottom: 16px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">Способ оплаты:</div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                <input type="radio" name="payMethod" value="vietqr" checked> 💳 VietQR (Банковский перевод Вьетнам)
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                <input type="radio" name="payMethod" value="cash"> 💵 Наличные курьеру (VND)
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                <input type="radio" name="payMethod" value="usdt"> 🪙 Криптовалюта USDT (TRC20/BEP20)
+              </label>
+            </div>
+          </div>
+
+          <button class="btn-buy-now" onclick="checkoutCart()">Оформить заказ 🛵</button>
+        </div>
       </div>
 
-      <!-- Section Title -->
-      <div class="section-header">
-        <div class="section-title" id="sectionTitle">Рекомендуем вам</div>
-        <a href="#" class="see-more" onclick="showAllAlert(event)">Все</a>
-      </div>
+      <!-- Profile View (Clean Replica of Sample Design) -->
+      <div id="viewProfile" class="app-view" style="display: none; padding: 16px 20px;">
+        
+        <!-- Profile Header -->
+        <div class="profile-header-center">
+          <div class="profile-avatar-wrap">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Avatar" class="profile-avatar-img" id="userAvatarImg">
+            <div class="profile-verified-badge">✓</div>
+          </div>
+          <div class="profile-user-name" id="userNameText">Sophia Williams</div>
+          <div class="profile-user-email" id="userEmailText">sophia@gmail.com</div>
+        </div>
 
-      <!-- 2 Column Clean Mobile Grid -->
-      <div class="menu-cards-grid" id="menuCardsGrid"></div>
+        <!-- Bonus Card -->
+        <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 16px; border-radius: 20px; color: #ffffff; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 24px rgba(15,23,42,0.12);">
+          <div>
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 600;">Бонусы BALANCE</div>
+            <div style="font-size: 20px; font-weight: 800; color: var(--accent-lime);" id="userBonusText">50,000 ₫</div>
+          </div>
+          <button class="btn-hero" style="font-size: 11px; padding: 8px 14px; background: var(--accent-lime); color: #0f172a; border-radius: 12px; font-weight: 800;" onclick="openReferralAlert()">+50k за друга</button>
+        </div>
+
+        <!-- Menu Group Items -->
+        <div class="profile-menu-group">
+          
+          <div class="profile-menu-item" onclick="openPersonalInfoModal()">
+            <div class="profile-item-left">
+              <div class="profile-item-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <span class="profile-item-title">Личные данные</span>
+            </div>
+            <span class="profile-item-arrow">›</span>
+          </div>
+
+          <div class="profile-menu-item" onclick="switchTab('orders', document.querySelectorAll('.tab-item')[2])">
+            <div class="profile-item-left">
+              <div class="profile-item-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              </div>
+              <span class="profile-item-title">Мои заказы</span>
+            </div>
+            <span class="profile-item-arrow">›</span>
+          </div>
+
+          <div class="profile-menu-item" onclick="selectLocationAlert()">
+            <div class="profile-item-left">
+              <div class="profile-item-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <span class="profile-item-title">Адрес доставки</span>
+            </div>
+            <span class="profile-item-arrow">›</span>
+          </div>
+
+          <div class="profile-menu-item" onclick="openSettingsModal()">
+            <div class="profile-item-left">
+              <div class="profile-item-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </div>
+              <span class="profile-item-title">Настройки</span>
+            </div>
+            <span class="profile-item-arrow">›</span>
+          </div>
+
+          <div class="profile-menu-item" onclick="openSupportModal()">
+            <div class="profile-item-left">
+              <div class="profile-item-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <span class="profile-item-title">Помощь и поддержка</span>
+            </div>
+            <span class="profile-item-arrow">›</span>
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
 
-    <!-- Bottom Mobile Tab Bar -->
+    <!-- Sticky Floating Bottom Cart Bar (Samokat Pattern) -->
+    <div class="floating-cart-bar" id="stickyFloatingCart" onclick="switchTab('cart', document.querySelectorAll('.tab-item')[3])">
+      <div class="floating-cart-info">
+        <div class="floating-cart-badge" id="stickyCartBadge">0</div>
+        <div class="floating-cart-text">
+          <div class="floating-cart-sum" id="stickyCartSum">0 VND</div>
+          <div class="floating-cart-time">⏱️ Экспресс-доставка ~30 мин</div>
+        </div>
+      </div>
+      <div class="floating-cart-btn">
+        <span>Корзина</span>
+        <span>➔</span>
+      </div>
+    </div>
+
+    <!-- Bottom Mobile Tab Bar (Exact Replica of Sample 2) -->
     <div class="tab-bar">
-      <div class="tab-item active" onclick="switchTab('home', this)">🏠</div>
-      <div class="tab-item" onclick="switchTab('fav', this)">🤍</div>
-      <div class="tab-item" onclick="switchTab('orders', this)">📋</div>
+      <div class="tab-item active" onclick="switchTab('home', this)">
+        <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z" fill="currentColor" stroke="none"/></svg>
+      </div>
+      <div class="tab-item" onclick="switchTab('fav', this)">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <div class="tab-item" onclick="switchTab('orders', this)">
+        <svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/><path d="M9 2h6v4H9z"/></svg>
+      </div>
       <div class="tab-item" onclick="openCartView(this)">
-        🛍️
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         <span class="tab-badge" id="tabCartBadge">0</span>
       </div>
-      <div class="tab-item" onclick="switchTab('profile', this)">👤</div>
+      <div class="tab-item" onclick="switchTab('profile', this)">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
     </div>
 
-    <!-- Product Details Modal Window (Mockup 2 & 3) -->
+    <!-- Product Details Modal Window (Modal Bottom Sheet) -->
     <div class="modal-overlay" id="detailsModal">
       <div class="modal-details-card">
         <div class="modal-top-bar">
@@ -640,9 +1404,9 @@
         </div>
 
         <div class="modal-prod-title" id="modalTitle">--</div>
-        <div class="modal-location">📍 Нячанг, BALANCE Cafe</div>
+        <div class="modal-location" id="modalSubTitle">📍 Salmon Waffle / Вафля с лососем (350 г)</div>
 
-        <!-- KBJU 4-Column Table -->
+        <!-- KBJU 4-Column Table Grid -->
         <div class="kbju-4col-grid">
           <div>
             <div class="kbju-col-val" id="modalKcal">0</div>
@@ -662,10 +1426,204 @@
           </div>
         </div>
 
-        <div class="modal-desc-heading">Описание</div>
+        <!-- Modifiers Block -->
+        <div class="modifier-group">
+          <div class="modifier-title">Основа блюда / Молоко:</div>
+          <div class="segmented-control">
+            <div class="segmented-item active" onclick="selectSegment(this)">С творогом (Классика)</div>
+            <div class="segmented-item" onclick="selectSegment(this)">С тофу (Vegan/Lactose-Free)</div>
+          </div>
+        </div>
+
+        <div class="modifier-group">
+          <div class="modifier-title">Суперфуды & Добавки в рацион:</div>
+          <div class="modifier-chip-list">
+            <div class="modifier-chip" onclick="toggleChip(this, 30000)">🥑 Авокадо (+30k ₫)</div>
+            <div class="modifier-chip" onclick="toggleChip(this, 30000)">🌱 Спаржа (+30k ₫)</div>
+            <div class="modifier-chip" onclick="toggleChip(this, 25000)">🧠 Ежовик гребенчатый (+25k ₫)</div>
+            <div class="modifier-chip" onclick="toggleChip(this, 20000)">✨ GABA Booster (+20k ₫)</div>
+          </div>
+        </div>
+
+        <div class="modal-desc-heading">Описание и полный состав</div>
         <div class="modal-desc-text" id="modalDesc">--</div>
 
         <button class="btn-buy-now" id="modalBuyBtn" onclick="addCurrentModalToCart()">Добавить в корзину</button>
+      </div>
+    </div>
+
+    <!-- Order Tracker Modal (Order Status Screen) -->
+    <div class="modal-overlay" id="trackerModal">
+      <div class="modal-details-card">
+        <div class="modal-top-bar">
+          <div style="font-weight: 800; font-size: 16px;">🛵 Статус заказа #1043</div>
+          <button class="btn-circle" onclick="closeTrackerModal()">✕</button>
+        </div>
+
+        <div style="background: #f8faf9; padding: 14px; border-radius: 16px; text-align: center; margin-bottom: 16px;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Ориентировочное время доставки:</div>
+          <div style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: #059669;" id="trackerTimer">~ 22 минуты</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Нячанг, курьер BALANCE мчит к вам 🛵</div>
+        </div>
+
+        <!-- 4-Step Order Progress Timeline -->
+        <div class="tracker-steps">
+          <div class="tracker-step-item active">
+            <div class="step-icon-circle">✓</div>
+            <div class="step-label">Принят</div>
+          </div>
+          <div class="tracker-step-item active">
+            <div class="step-icon-circle">👨‍🍳</div>
+            <div class="step-label">Готовится</div>
+          </div>
+          <div class="tracker-step-item active">
+            <div class="step-icon-circle">🛵</div>
+            <div class="step-label">В пути</div>
+          </div>
+          <div class="tracker-step-item">
+            <div class="step-icon-circle">🎁</div>
+            <div class="step-label">Доставлен</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+          <button class="btn-buy-now" style="background: #f1f5f9; color: #000; flex: 1; font-size: 12px;" onclick="tg.showAlert ? tg.showAlert('Звонок курьеру: +84 90 123 4567') : alert('Звонок курьеру: +84 90 123 4567')">📞 Позвонить курьеру</button>
+          <button class="btn-buy-now" style="flex: 1; font-size: 12px;" onclick="tg.showAlert ? tg.showAlert('Открытие чата с поддержкой BALANCE Telegram...') : alert('Открытие чата с поддержкой BALANCE Telegram...')">💬 Чат с поддержкой</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Personal Information Edit Modal (Exact Replica of Sample 3) -->
+    <div class="modal-overlay" id="personalInfoModal">
+      <div class="modal-details-card">
+        <div class="modal-top-bar" style="margin-bottom: 20px;">
+          <button class="btn-circle" onclick="closePersonalInfoModal()">←</button>
+          <div style="font-weight: 800; font-size: 16px;">Личные данные</div>
+          <div style="width: 32px;"></div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 24px;">
+          <div class="profile-avatar-wrap" style="width: 76px; height: 76px;">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Avatar" class="profile-avatar-img" id="editAvatarImg">
+            <div class="profile-verified-badge">✓</div>
+          </div>
+          <div style="font-size: 13px; font-weight: 700; color: #0f172a; cursor: pointer;" onclick="tg.showAlert ? tg.showAlert('Выбор фото из библиотеки Telegram') : alert('Выбор фото из библиотеки')">Сменить фото</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px;">
+          <div>
+            <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: block;">Имя и Фамилия</label>
+            <input type="text" id="inputEditName" value="София Уилльямс" style="width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0; background: #f8faf9; font-size: 13px; font-weight: 700;">
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+              <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: block;">Эл. почта</label>
+              <input type="email" id="inputEditEmail" value="sophia@gmail.com" style="width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0; background: #f8faf9; font-size: 12px; font-weight: 600;">
+            </div>
+            <div style="flex: 1;">
+              <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: block;">Телефон</label>
+              <input type="text" id="inputEditPhone" value="+84901234567" style="width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0; background: #f8faf9; font-size: 12px; font-weight: 600;">
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: block;">Адрес доставки</label>
+            <input type="text" id="inputEditAddress" value="Центр Нячанга, ул. Tran Phu 12" style="width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0; background: #f8faf9; font-size: 13px; font-weight: 600;">
+          </div>
+
+          <div>
+            <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: block;">О себе</label>
+            <textarea id="inputEditAbout" style="width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2e8f0; background: #f8faf9; font-size: 12px; font-weight: 500; height: 60px; resize: none;" placeholder="Люблю овсянку с авокадо и бег у моря"></textarea>
+          </div>
+        </div>
+
+        <button class="btn-buy-now" style="background: #0f172a; color: #ffffff;" onclick="savePersonalInfo()">Сохранить изменения</button>
+      </div>
+    </div>
+
+    <!-- Settings Modal Page -->
+    <div class="modal-overlay" id="settingsModal">
+      <div class="modal-details-card">
+        <div class="modal-top-bar" style="margin-bottom: 20px;">
+          <button class="btn-circle" onclick="closeSettingsModal()">←</button>
+          <div style="font-weight: 800; font-size: 16px;">Настройки</div>
+          <div style="width: 32px;"></div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+          <div style="background: #f8faf9; padding: 14px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #0f172a;">Push-уведомления</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Статусы доставки и акции</div>
+            </div>
+            <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: var(--accent-lime);">
+          </div>
+
+          <div style="background: #f8faf9; padding: 14px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #0f172a;">Звук и виброотклик Haptic</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Тактильная связь в Telegram</div>
+            </div>
+            <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: var(--accent-lime);">
+          </div>
+
+          <div style="background: #f8faf9; padding: 14px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #0f172a;">Язык приложения</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Текущий: Русский 🇷🇺</div>
+            </div>
+            <span style="font-size: 12px; font-weight: 800; color: #059669; cursor: pointer;" onclick="tg.showAlert ? tg.showAlert('Язык приложения: Русский') : alert('Язык: Русский')">Изменить</span>
+          </div>
+
+          <div style="background: #f8faf9; padding: 14px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #0f172a;">Тема оформления</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Светлая фитнес-тема</div>
+            </div>
+            <span style="font-size: 12px; font-weight: 800; color: #0f172a;">Light</span>
+          </div>
+        </div>
+
+        <button class="btn-buy-now" style="background: #0f172a; color: #ffffff;" onclick="closeSettingsModal()">Готово</button>
+      </div>
+    </div>
+
+    <!-- Help & Support Modal Page -->
+    <div class="modal-overlay" id="supportModal">
+      <div class="modal-details-card">
+        <div class="modal-top-bar" style="margin-bottom: 20px;">
+          <button class="btn-circle" onclick="closeSupportModal()">←</button>
+          <div style="font-weight: 800; font-size: 16px;">Помощь и поддержка</div>
+          <div style="width: 32px;"></div>
+        </div>
+
+        <div style="background: #f8faf9; padding: 16px; border-radius: 18px; text-align: center; margin-bottom: 16px;">
+          <div style="font-size: 32px; margin-bottom: 6px;">🥑</div>
+          <div style="font-weight: 800; font-size: 15px; margin-bottom: 4px;">Служба заботы BALANCE</div>
+          <div style="font-size: 11px; color: var(--text-muted);">Мы на связи ежедневно с 08:00 до 22:00 по Нячангу</div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+          <button class="btn-buy-now" style="background: #0088cc; color: #fff; flex: 1; font-size: 12px;" onclick="tg.showAlert ? tg.showAlert('Открытие чата с оператором: @BalanceFoodSupport') : alert('Чат: @BalanceFoodSupport')">💬 Написать в Telegram</button>
+          <button class="btn-buy-now" style="background: #f1f5f9; color: #0f172a; flex: 1; font-size: 12px;" onclick="tg.showAlert ? tg.showAlert('Позвонить: +84 90 123 4567') : alert('Телефон: +84 90 123 4567')">📞 Позвонить</button>
+        </div>
+
+        <div style="font-size: 13px; font-weight: 800; margin-bottom: 10px;">Часто задаваемые вопросы:</div>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+          <div style="background: #ffffff; border: 1px solid #f1f5f9; padding: 12px; border-radius: 14px;">
+            <div style="font-weight: 700; font-size: 12px; margin-bottom: 4px;">⏱️ Сколько времени занимает доставка?</div>
+            <div style="font-size: 11px; color: var(--text-muted);">По центру Нячанга экспресс-доставка занимает в среднем ~30 минут.</div>
+          </div>
+
+          <div style="background: #ffffff; border: 1px solid #f1f5f9; padding: 12px; border-radius: 14px;">
+            <div style="font-weight: 700; font-size: 12px; margin-bottom: 4px;">🥑 Качество и подсчет КБЖУ</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Каждая порция взвешивается шеф-поваром перед отправкой с точностью до грамма.</div>
+          </div>
+        </div>
+
+        <button class="btn-buy-now" style="background: #0f172a; color: #ffffff;" onclick="closeSupportModal()">Закрыть</button>
       </div>
     </div>
 
@@ -760,6 +1718,101 @@
 
 
 
+    let currentActiveTab = 'home';
+
+    function switchTab(tabName, el) {
+      currentActiveTab = tabName;
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      document.querySelectorAll('.app-view').forEach(v => v.style.display = 'none');
+
+      if (tabName === 'home') {
+        document.getElementById('viewHome').style.display = 'block';
+      } else if (tabName === 'fav') {
+        document.getElementById('viewFav').style.display = 'block';
+        renderFavView();
+      } else if (tabName === 'orders') {
+        document.getElementById('viewOrders').style.display = 'block';
+      } else if (tabName === 'cart') {
+        document.getElementById('viewCart').style.display = 'block';
+        renderCartView();
+      } else if (tabName === 'profile') {
+        document.getElementById('viewProfile').style.display = 'block';
+      }
+
+      updateStickyFloatingCart();
+
+      if (tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
+
+    function openCartView(el) {
+      switchTab('cart', el);
+    }
+
+    function renderFavView() {
+      const container = document.getElementById('favCardsGrid');
+      if (!container) return;
+      
+      let favItems = [];
+      if (menuData) {
+        menuData.categories.forEach(c => {
+          c.items.forEach(i => {
+            if (favorites.has(i.id)) favItems.push(i);
+          });
+        });
+      }
+
+      if (favItems.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-muted);">
+            <div style="font-size: 40px; margin-bottom: 8px;">🤍</div>
+            <div style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">У вас пока нет избранных блюд</div>
+            <div style="font-size: 12px;">Нажимайте на сердечко на карточках блюд, чтобы добавить их сюда.</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = favItems.map(item => {
+        const price = item.price_vnd || item.price_m || 0;
+        const kcal = item.kcal || item.kcal_m || 0;
+        const imgUrl = customImages[item.id] || '/waffle_salmon.png';
+        const count = getItemCountInCart(item.id);
+        const weight = item.weight_g ? `${item.weight_g} г` : '350 г';
+
+        return `
+          <div class="product-card" onclick="openDetailsModal('${item.id}')">
+            <div class="prod-img-box">
+              <span class="badge-tag badge-kcal">🔥 ${kcal}</span>
+              <div class="fav-heart active" onclick="event.stopPropagation(); toggleFav('${item.id}', this); renderFavView();">
+                ❤️
+              </div>
+              <img src="${imgUrl}" alt="${item.title_ru}">
+            </div>
+            
+            <div class="prod-name">${item.title_ru}</div>
+            <div class="prod-weight">${weight}</div>
+
+            <div class="card-action-row">
+              ${count === 0 ? `
+                <div class="samokat-price-pill" onclick="event.stopPropagation(); addToCart('${item.id}', ${price}, ${kcal}); renderFavView();">
+                  <span class="prod-price">${price.toLocaleString()} ₫</span>
+                  <div class="btn-add-plus">+</div>
+                </div>
+              ` : `
+                <div class="btn-stepper" onclick="event.stopPropagation();">
+                  <button onclick="removeFromCart('${item.id}'); renderFavView();">-</button>
+                  <span>${count}</span>
+                  <button onclick="addToCart('${item.id}', ${price}, ${kcal}); renderFavView();">+</button>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
     function switchCategory(catId, el) {
       document.querySelectorAll('.category-card-item').forEach(b => b.classList.remove('active'));
       el.classList.add('active');
@@ -768,6 +1821,10 @@
 
 
 
+    function getItemCountInCart(id) {
+      return cart.filter(i => i.id === id).length;
+    }
+
     function renderCategoryItems(catId) {
       const container = document.getElementById('menuCardsGrid');
       const cat = menuData.categories.find(c => c.id === catId);
@@ -775,29 +1832,44 @@
 
       document.getElementById('sectionTitle').innerText = cat.title_ru;
 
-      container.innerHTML = cat.items.map(item => {
+      container.innerHTML = cat.items.map((item, idx) => {
         const price = item.price_vnd || item.price_m || 0;
         const kcal = item.kcal || item.kcal_m || 0;
         const imgUrl = customImages[item.id] || '/waffle_salmon.png';
         const isFav = favorites.has(item.id);
+        const count = getItemCountInCart(item.id);
+        const weight = item.weight_g ? `${item.weight_g} г` : '350 г';
+
+        // Badge logic (Samokat style)
+        let discountPct = idx === 0 ? '-20%' : (idx === 1 ? '-15%' : '-25%');
 
         return `
           <div class="product-card" onclick="openDetailsModal('${item.id}')">
-            <div class="fav-heart ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFav('${item.id}', this)">
-              ${isFav ? '❤️' : '🤍'}
-            </div>
             <div class="prod-img-box">
+              <span class="badge-tag badge-kcal">🔥 ${kcal}</span>
+              <div class="card-top-badges">
+                <span class="badge-tag">${discountPct}</span>
+              </div>
               <img src="${imgUrl}" alt="${item.title_ru}">
             </div>
             
             <div class="prod-name">${item.title_ru}</div>
-            <div class="prod-desc">${item.description_ru || 'Фитнес блюдо BALANCE'}</div>
-            
-            <div class="kbju-info-mini">🔥 ${kcal} kcal</div>
+            <div class="prod-weight">${weight}</div>
 
             <div class="card-action-row">
-              <div class="prod-price">${price.toLocaleString()} VND</div>
-              <button class="btn-add-lime" onclick="event.stopPropagation(); addToCart('${item.id}', ${price}, ${kcal})">+</button>
+              ${count === 0 ? `
+                <div class="samokat-price-pill" onclick="event.stopPropagation(); addToCart('${item.id}', ${price}, ${kcal}); renderCategoryItems('${catId}');">
+                  <span class="prod-old-price">${Math.round(price * 1.25).toLocaleString()} ₫</span>
+                  <span class="prod-price">${price.toLocaleString()} ₫</span>
+                  <div class="btn-add-plus">+</div>
+                </div>
+              ` : `
+                <div class="btn-stepper" onclick="event.stopPropagation();">
+                  <button onclick="removeFromCart('${item.id}'); renderCategoryItems('${catId}');">-</button>
+                  <span>${count}</span>
+                  <button onclick="addToCart('${item.id}', ${price}, ${kcal}); renderCategoryItems('${catId}');">+</button>
+                </div>
+              `}
             </div>
           </div>
         `;
@@ -852,61 +1924,228 @@
       toggleFav(activeItemForModal.id, btn);
     }
 
+    function switchDeliveryMode(mode) {
+      const pill = document.getElementById('deliveryPillBg');
+      const delOpt = document.getElementById('toggleDelivery');
+      const picOpt = document.getElementById('togglePickup');
+
+      if (mode === 'delivery') {
+        pill.style.transform = 'translateX(0%)';
+        delOpt.classList.add('active');
+        picOpt.classList.remove('active');
+      } else {
+        pill.style.transform = 'translateX(100%)';
+        picOpt.classList.add('active');
+        delOpt.classList.remove('active');
+      }
+      if (tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
+
+    function triggerConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#84cc16', '#65a30d', '#ffffff', '#1e293b']
+        });
+      }
+    }
+
     function addToCart(id, price, kcal) {
       cart.push({ id, price, kcal });
       if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-      updateCartBadge();
-    }
 
-    function addCurrentModalToCart() {
-      if (!activeItemForModal) return;
-      const price = activeItemForModal.price_vnd || activeItemForModal.price_m || 0;
-      const kcal = activeItemForModal.kcal || activeItemForModal.kcal_m || 0;
-      addToCart(activeItemForModal.id, price, kcal);
-      closeDetailsModal();
+      // Elastic Spring Bounce on Cart Badges
+      const badge = document.getElementById('tabCartBadge');
+      if (badge) {
+        badge.classList.remove('bounce');
+        void badge.offsetWidth;
+        badge.classList.add('bounce');
+      }
+
+      updateCartBadge();
+      updateStickyFloatingCart();
     }
 
     function updateCartBadge() {
       const badge = document.getElementById('tabCartBadge');
       if (cart.length > 0) {
         badge.innerText = cart.length;
-        badge.style.display = 'block';
+        badge.style.display = 'flex';
       } else {
         badge.style.display = 'none';
       }
     }
 
-    function openCartView(el) {
-      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-      el.classList.add('active');
+    function updateStickyFloatingCart() {
+      const bar = document.getElementById('stickyFloatingCart');
+      const badge = document.getElementById('stickyCartBadge');
+      const sum = document.getElementById('stickyCartSum');
 
-      if (cart.length === 0) {
-        tg.showAlert("Ваша корзина пуста. Добавьте блюда из меню.");
-        return;
+      if (cart.length > 0 && currentActiveTab !== 'cart') {
+        const totalSum = cart.reduce((s, i) => s + i.price, 0);
+        badge.innerText = cart.length;
+        sum.innerText = totalSum.toLocaleString() + ' ₫';
+        bar.classList.add('active');
+      } else {
+        bar.classList.remove('active');
       }
-      const totalSum = cart.reduce((s, i) => s + i.price, 0);
-      const totalKcal = cart.reduce((s, i) => s + i.kcal, 0);
-      
-      tg.showConfirm(`Оформить заказ?\nВыбрано позиций: ${cart.length}\nСумма: ${totalSum.toLocaleString()} VND\nКалории: ${totalKcal} kcal`, (ok) => {
-        if (ok) tg.sendData(JSON.stringify({ action: 'CHECKOUT', cart }));
-      });
     }
 
-    function switchTab(name, el) {
-      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+    function selectSegment(el) {
+      el.parentElement.querySelectorAll('.segmented-item').forEach(i => i.classList.remove('active'));
       el.classList.add('active');
+      if (tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
 
-      if (name === 'fav') {
-        if (favorites.size === 0) {
-          tg.showAlert("У вас пока нет избранных блюд. Нажмите 🤍 на карточке товара.");
-        } else {
-          tg.showAlert(`В избранном товаров: ${favorites.size}`);
-        }
-      } else if (name === 'orders') {
-        tg.showAlert("История заказов: Ваш прошлый заказ (Вафля с лососем + Американо) готов к повтору за 1 клик.");
-      } else if (name === 'profile') {
-        tg.showAlert("Ваш баланс: 50,000 VND бонусных баллов.\nРеферальная ссылка скопирована в буфер.");
+    function toggleChip(el, fee) {
+      el.classList.toggle('active');
+      if (tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
+
+    function openTrackerModal() {
+      document.getElementById('trackerModal').classList.add('active');
+    }
+    function closeTrackerModal() {
+      document.getElementById('trackerModal').classList.remove('active');
+    }
+
+    function renderCartView() {
+      const list = document.getElementById('cartItemsList');
+      const empty = document.getElementById('cartEmptyState');
+      const summary = document.getElementById('cartSummaryBox');
+      const upsell = document.getElementById('upsellSection');
+
+      if (cart.length === 0) {
+        list.innerHTML = '';
+        empty.style.display = 'block';
+        summary.style.display = 'none';
+        upsell.style.display = 'none';
+        document.getElementById('freeDeliveryBox').style.display = 'none';
+        return;
       }
+
+      empty.style.display = 'none';
+      summary.style.display = 'block';
+      upsell.style.display = 'block';
+      document.getElementById('freeDeliveryBox').style.display = 'block';
+
+      // Group cart items
+      let grouped = {};
+      cart.forEach(item => {
+        if (!grouped[item.id]) {
+          let found = null;
+          menuData.categories.forEach(c => {
+            const f = c.items.find(i => i.id === item.id);
+            if (f) found = f;
+          });
+          grouped[item.id] = { ...item, name: found ? found.title_ru : 'Блюдо BALANCE', count: 0 };
+        }
+        grouped[item.id].count += 1;
+      });
+
+      const totalSum = cart.reduce((s, i) => s + i.price, 0);
+      const totalKcal = cart.reduce((s, i) => s + i.kcal, 0);
+      const totalP = Math.round(totalKcal * 0.08);
+      const totalF = Math.round(totalKcal * 0.03);
+      const totalC = Math.round(totalKcal * 0.09);
+
+      // Free delivery logic (target 200,000 VND)
+      const targetFree = 200000;
+      const freeFill = document.getElementById('freeDeliveryFill');
+      const freeText = document.getElementById('freeDeliveryText');
+      const freePercent = document.getElementById('freeDeliveryPercent');
+
+      if (totalSum >= targetFree) {
+        freeFill.style.width = '100%';
+        freeText.innerText = '🎉 У вас БЕСПЛАТНАЯ экспресс-доставка по Нячангу!';
+        freePercent.innerText = '100%';
+      } else {
+        const diff = targetFree - totalSum;
+        const pct = Math.min(100, Math.round((totalSum / targetFree) * 100));
+        freeFill.style.width = pct + '%';
+        freeText.innerText = `Добавьте ещё на ${diff.toLocaleString()} ₫ для бесплатной доставки 🛵`;
+        freePercent.innerText = pct + '%';
+      }
+
+      document.getElementById('cartTotalSum').innerText = totalSum.toLocaleString() + ' VND';
+      document.getElementById('cartTotalKbjuDetail').innerText = `🔥 ${totalKcal} kcal | Б: ${totalP}g | Ж: ${totalF}g | У: ${totalC}g`;
+
+      list.innerHTML = Object.values(grouped).map(g => `
+        <div style="background: #ffffff; padding: 12px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">${g.name}</div>
+            <div style="font-size: 11px; color: var(--text-muted);">${g.price.toLocaleString()} VND • 🔥 ${g.kcal} kcal</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <button class="btn-circle" style="width: 26px; height: 26px; font-size: 12px;" onclick="removeFromCart('${g.id}')">-</button>
+            <span style="font-weight: 800; font-size: 13px;">${g.count}</span>
+            <button class="btn-circle" style="width: 26px; height: 26px; font-size: 12px;" onclick="addToCart('${g.id}', ${g.price}, ${g.kcal}); renderCartView();">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function removeFromCart(id) {
+      const idx = cart.findIndex(i => i.id === id);
+      if (idx !== -1) {
+        cart.splice(idx, 1);
+        updateCartBadge();
+        updateStickyFloatingCart();
+        renderCartView();
+      }
+    }
+
+    function checkoutCart() {
+      if (cart.length === 0) return;
+      
+      const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
+      const address = document.getElementById('cartAddressInput')?.value || '';
+      const phone = document.getElementById('cartPhoneInput')?.value || '';
+      const change = document.getElementById('cartChangeInput')?.value || '';
+      const comment = document.getElementById('cartCommentInput')?.value || '';
+
+      const btn = document.querySelector('#cartSummaryBox .btn-buy-now');
+
+      if (btn) {
+        btn.classList.add('checkout-animating');
+        
+        // Scooter runner element
+        const runner = document.createElement('div');
+        runner.className = 'scooter-anim-runner';
+        runner.innerHTML = `🛵 <span class="scooter-anim-bag">BALANCE</span>`;
+        btn.appendChild(runner);
+      }
+
+      if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+      setTimeout(() => {
+        if (btn) {
+          btn.classList.remove('checkout-animating');
+          const r = btn.querySelector('.scooter-anim-runner');
+          if (r) r.remove();
+        }
+
+        if (tg.sendData) {
+          tg.sendData(JSON.stringify({ action: 'CHECKOUT', cart, payMethod, address, phone, change, comment }));
+        }
+
+        cart = [];
+        updateCartBadge();
+        updateStickyFloatingCart();
+        renderCartView();
+        
+        // Open Order Tracker Modal & Fire Confetti Explosion!
+        openTrackerModal();
+        triggerConfetti();
+      }, 1200);
+    }
+
+    function reorderLast() {
+      addToCart('waffle-salmon', 140000, 420);
+      addToCart('waffle-chocolate', 50000, 200);
+      switchTab('cart', document.querySelectorAll('.tab-item')[3]);
     }
 
     function searchAlert() {
@@ -962,10 +2201,34 @@
       tg.showAlert("Показаны все популярные фитнес-позиции BALANCE.");
     }
 
-    function scrollToMenu() {
-      document.getElementById('menuCardsGrid').scrollIntoView({ behavior: 'smooth' });
+    function openPersonalInfoModal() {
+      document.getElementById('personalInfoModal').classList.add('active');
+    }
+    function closePersonalInfoModal() {
+      document.getElementById('personalInfoModal').classList.remove('active');
+    }
+    function savePersonalInfo() {
+      const name = document.getElementById('inputEditName').value;
+      const email = document.getElementById('inputEditEmail').value;
+      if (name) document.getElementById('userNameText').innerText = name;
+      if (email) document.getElementById('userEmailText').innerText = email;
+      closePersonalInfoModal();
+      if (tg.showAlert) tg.showAlert("✅ Данные профиля успешно сохранены!");
     }
 
+    function openSettingsModal() {
+      document.getElementById('settingsModal').classList.add('active');
+    }
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.remove('active');
+    }
+
+    function openSupportModal() {
+      document.getElementById('supportModal').classList.add('active');
+    }
+    function closeSupportModal() {
+      document.getElementById('supportModal').classList.remove('active');
+    }
 
     fetchMenu();
   </script>

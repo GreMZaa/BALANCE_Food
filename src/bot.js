@@ -39,14 +39,19 @@ const bot = new Bot(BOT_TOKEN);
 
 // Вспомогательная функция для сборки постоянной Reply-клавиатуры
 function getReplyKeyboard(webAppUrl) {
-  return new Keyboard()
-    .webApp('🥗 Открыть Mini App', webAppUrl)
-    .row()
+  const kb = new Keyboard();
+  if (webAppUrl && webAppUrl.startsWith('https://')) {
+    kb.webApp('🥗 Открыть Mini App', webAppUrl).row();
+  } else {
+    kb.text('🥗 Открыть Меню').row();
+  }
+  return kb
     .text('⚡ Заказ в 1 клик')
     .text('🧮 КБЖУ Консультант')
     .row()
     .text('📍 Доставка Нячанг')
     .text('🎁 Бонусы')
+    .row()
     .text('💬 Поддержка')
     .resized();
 }
@@ -86,9 +91,13 @@ bot.command('start', async (ctx) => {
     inlineKeyboard.text(`🔄 Повторить прошлый заказ? (${session.lastOrder.summary})`, 'reorder_last').row();
   }
 
+  if (webAppUrl && webAppUrl.startsWith('https://')) {
+    inlineKeyboard.webApp('🥗 Открыть Меню / Заказать (Mini App)', webAppUrl).row();
+  } else {
+    inlineKeyboard.text('🥗 Открыть Меню', 'show_menu_cb').row();
+  }
+
   inlineKeyboard
-    .webApp('🥗 Открыть Меню / Заказать (Mini App)', webAppUrl)
-    .row()
     .text('🧮 Фитнес-консультант КБЖУ', 'fit_advisor')
     .text('📍 Доставка (Нячанг)', 'calc_delivery')
     .row()
@@ -113,8 +122,20 @@ bot.command('start', async (ctx) => {
   });
 });
 
-// 📌 2. Команда /menu
+// 📌 2. Команда /menu & Hears
 bot.command('menu', async (ctx) => {
+  await handleMenuShow(ctx);
+});
+
+bot.hears(/(меню|menu)/i, async (ctx) => {
+  await handleMenuShow(ctx);
+});
+
+bot.hears('🥗 Открыть Меню', async (ctx) => {
+  await handleMenuShow(ctx);
+});
+
+async function handleMenuShow(ctx) {
   const webAppUrl = process.env.WEBAPP_URL || `http://localhost:${PORT}`;
   let msg = `🥗 *МЕНЮ BALANCE FOOD (Нячанг)*:\n\n`;
   
@@ -126,9 +147,14 @@ bot.command('menu', async (ctx) => {
     msg += `\n`;
   });
 
-  const keyboard = new InlineKeyboard().webApp('🛒 Открыть полное меню в Mini App', webAppUrl);
+  const keyboard = new InlineKeyboard();
+  if (webAppUrl && webAppUrl.startsWith('https://')) {
+    keyboard.webApp('🛒 Открыть полное меню в Mini App', webAppUrl);
+  } else {
+    keyboard.text('⚡ Заказать в 1 клик', 'reorder_last').text('🧮 КБЖУ', 'fit_advisor');
+  }
   await ctx.reply(msg, { parse_mode: 'Markdown', reply_markup: keyboard });
-});
+}
 
 // 📌 3. Команда /reorder (Заказ в 1 клик)
 bot.command('reorder', async (ctx) => {
@@ -246,6 +272,11 @@ async function handleSupport(ctx) {
 }
 
 // Inline Callback Queries
+bot.callbackQuery('show_menu_cb', async (ctx) => {
+  await ctx.answerCallbackQuery();
+  await handleMenuShow(ctx);
+});
+
 bot.callbackQuery('fit_advisor', async (ctx) => {
   await ctx.answerCallbackQuery();
   await handleKbjuAdvisor(ctx);
@@ -294,3 +325,6 @@ app.listen(PORT, () => {
     console.log("Running in DEV mode with express web server.");
   }
 });
+
+module.exports = app;
+

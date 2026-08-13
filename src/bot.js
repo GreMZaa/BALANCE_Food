@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const { Bot, InlineKeyboard, Keyboard } = require('grammy');
+const { Bot, InlineKeyboard, Keyboard, webhookCallback } = require('grammy');
 const { fitConsultantAdvisor, calculateNhaTrangDelivery, generateReferralLink, menuData } = require('./services');
 
 const BOT_TOKEN = process.env.BOT_TOKEN || 'DUMMY_BOT_TOKEN_FOR_DEV';
@@ -12,6 +12,13 @@ const userSessions = {};
 
 const app = express();
 app.use(express.json());
+
+// Инициализация бота
+const bot = new Bot(BOT_TOKEN);
+
+// Webhook роут для Telegram бота в Vercel Serverless
+app.use('/api/webhook', webhookCallback(bot, 'express'));
+
 app.use(express.static(path.join(__dirname, '../public')));
 
 // API меню для Mini App
@@ -33,9 +40,6 @@ app.get('/admin', (req, res) => {
 app.get('/owner', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/owner.html'));
 });
-
-// Инициализация бота
-const bot = new Bot(BOT_TOKEN);
 
 // Вспомогательная функция для сборки постоянной Reply-клавиатуры
 function getReplyKeyboard(webAppUrl) {
@@ -318,11 +322,14 @@ bot.callbackQuery('confirm_reorder', async (ctx) => {
 // Запуск веб-сервера Express и фонового бота
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
-  if (BOT_TOKEN !== 'DUMMY_BOT_TOKEN_FOR_DEV') {
-    bot.start();
-    console.log("Telegram Bot started!");
+  if (!process.env.VERCEL && BOT_TOKEN !== 'DUMMY_BOT_TOKEN_FOR_DEV') {
+    bot.start({
+      onStart: (botInfo) => {
+        console.log(`Telegram Bot @${botInfo.username} started in polling mode!`);
+      }
+    });
   } else {
-    console.log("Running in DEV mode with express web server.");
+    console.log("Running in Webhook / Vercel Serverless mode.");
   }
 });
 

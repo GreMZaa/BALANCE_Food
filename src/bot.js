@@ -272,6 +272,34 @@ async function handleSupport(ctx) {
   );
 }
 
+// 📌 8. Команды служебных панелей (Admin, Courier, Owner)
+bot.command('admin', async (ctx) => {
+  const webAppUrl = (process.env.WEBAPP_URL || `http://localhost:${PORT}`) + '/admin';
+  const keyboard = new InlineKeyboard().webApp('👨‍🍳 Открыть Панель Администратора (Mini App)', webAppUrl);
+  await ctx.reply(`👨‍🍳 *Панель Администратора & Кухни BALANCE*:\n\nУправление стоп-листом, прием заказов и смена статусов приготовления.`, {
+    parse_mode: 'Markdown',
+    reply_markup: keyboard
+  });
+});
+
+bot.command('courier', async (ctx) => {
+  const webAppUrl = (process.env.WEBAPP_URL || `http://localhost:${PORT}`) + '/courier';
+  const keyboard = new InlineKeyboard().webApp('🛵 Открыть Кабинет Курьера (Mini App)', webAppUrl);
+  await ctx.reply(`🛵 *Кабинет Курьера BALANCE*:\n\nКарта Нячанга, активные заказы и управление доставкой.`, {
+    parse_mode: 'Markdown',
+    reply_markup: keyboard
+  });
+});
+
+bot.command('owner', async (ctx) => {
+  const webAppUrl = (process.env.WEBAPP_URL || `http://localhost:${PORT}`) + '/owner';
+  const keyboard = new InlineKeyboard().webApp('📊 Открыть Панель Владельца (Mini App)', webAppUrl);
+  await ctx.reply(`📊 *Панель Владельца & Маркетолога BALANCE*:\n\nАналитика выручки, настройка кэшбэка, реферальных бонусов и push-рассылки.`, {
+    parse_mode: 'Markdown',
+    reply_markup: keyboard
+  });
+});
+
 // Inline Callback Queries
 bot.callbackQuery('show_menu_cb', async (ctx) => {
   await ctx.answerCallbackQuery();

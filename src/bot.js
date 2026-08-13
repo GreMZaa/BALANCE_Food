@@ -23,6 +23,11 @@ app.get('/courier', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/courier.html'));
 });
 
+// Роут интерфейса администратора / менеджера кухни
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/admin.html'));
+});
+
 // Инициализация бота
 const bot = new Bot(BOT_TOKEN);
 

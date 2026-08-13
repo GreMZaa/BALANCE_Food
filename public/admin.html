@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BALANCE Admin & Kitchen — Панель Администратора (Нячанг)</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-app: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-sub: #334155;
+      --accent-emerald: #10b981;
+      --accent-lime: #84cc16;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #020617;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .admin-viewport {
+      width: 100%;
+      max-width: 520px;
+      background: var(--bg-app);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      padding-bottom: 40px;
+    }
+
+    /* Top Admin Header */
+    .admin-header {
+      background: #1e293b;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid #334155;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .brand-title span { color: var(--accent-emerald); }
+
+    .header-right-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-profile-trigger {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #334155;
+      border: 1.5px solid var(--accent-emerald);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .btn-profile-trigger img { width: 100%; height: 100%; object-fit: cover; }
+
+    .header-sound-btn {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--accent-emerald);
+      color: var(--accent-emerald);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Admin Personal Cabinet Banner */
+    .admin-profile-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      margin: 14px 16px 6px 16px;
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .admin-profile-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .admin-profile-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-avatar-large {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-emerald);
+      object-fit: cover;
+    }
+
+    .admin-info-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .staff-role-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-emerald);
+      border: 1px solid var(--accent-emerald);
+      margin-top: 3px;
+    }
+
+    .btn-edit-profile {
+      background: #334155;
+      border: 1px solid #475569;
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .btn-edit-profile:active { background: #475569; }
+
+    .role-segmented-control {
+      display: flex;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 4px;
+      border-radius: 14px;
+      gap: 4px;
+    }
+
+    .role-segmented-item {
+      flex: 1;
+      text-align: center;
+      padding: 8px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .role-segmented-item.active {
+      background: var(--accent-emerald);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Metrics Summary Banner Grid */
+    .metrics-banner {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      margin: 8px 16px 6px 16px;
+      padding: 14px 10px;
+      border-radius: 20px;
+      border: 1px solid #334155;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+
+    .metric-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 2px;
+      position: relative;
+    }
+    .metric-box:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 15%;
+      height: 70%;
+      width: 1px;
+      background: #334155;
+    }
+
+    .metric-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--accent-emerald);
+      white-space: nowrap;
+    }
+    .metric-lbl {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 2px;
+      line-height: 1.2;
+    }
+
+    /* Tab Controller */
+    .admin-tab-bar {
+      padding: 12px 16px 6px 16px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .admin-tab-btn {
+      flex: 1;
+      padding: 10px 0;
+      border-radius: 14px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .admin-tab-btn.active {
+      background: var(--accent-emerald);
+      color: #ffffff;
+      border-color: var(--accent-emerald);
+    }
+
+    /* Orders Area */
+    .admin-content-section {
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Modal Bottom Sheet Overlay */
+    .modal-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(2, 6, 23, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-card {
+      background: #1e293b;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      width: 100%;
+      max-height: 90%;
+      overflow-y: auto;
+      padding: 20px 18px 28px 18px;
+      border: 1px solid #334155;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+      animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .kitchen-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .kitchen-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #334155;
+    }
+
+    .order-id {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .status-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+    .badge-new { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
+    .badge-prep { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); }
+    .badge-way { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid #3b82f6; }
+
+    .items-list-box {
+      background: #0f172a;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .item-name { font-weight: 700; color: #ffffff; }
+    .item-mod { font-size: 11px; color: var(--accent-lime); }
+
+    /* Courier Select Bar */
+    .courier-assign-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.03);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+    .courier-select {
+      background: #334155;
+      color: #ffffff;
+      border: 1px solid #475569;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Admin Action Button */
+    .btn-admin-action {
+      width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      border: none;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-prep { background: var(--accent-amber); color: #0f172a; }
+    .btn-ready { background: var(--accent-emerald); color: #ffffff; }
+    .btn-handover { background: #3b82f6; color: #ffffff; }
+
+    /* Stop List Table */
+    .stop-list-card {
+      background: var(--bg-card);
+      border-radius: 18px;
+      padding: 14px;
+      border: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .stop-item-title { font-weight: 700; font-size: 14px; color: #ffffff; }
+    .stop-item-category { font-size: 11px; color: var(--text-muted); }
+
+    .btn-toggle-stop {
+      padding: 8px 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-in-stock { background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); }
+    .btn-out-stock { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
+  </style>
+</head>
+<body>
+
+  <div class="admin-viewport">
+
+    <!-- Header -->
+    <div class="admin-header">
+      <div class="brand-title">👨‍🍳 BALANCE <span>Admin & KDS</span></div>
+      <div class="header-right-group">
+        <div class="header-sound-btn" onclick="toggleSound()">
+          🔊 Звук: Вкл
+        </div>
+        <div class="btn-profile-trigger" onclick="openAdminProfileModal()">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80" alt="Admin Avatar" id="adminHeaderImg">
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Personal Cabinet Banner -->
+    <div class="admin-profile-card">
+      <div class="admin-profile-top">
+        <div class="admin-profile-user">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80" alt="Avatar" class="admin-avatar-large" id="adminBannerImg">
+          <div>
+            <div class="admin-info-name" id="adminNameText">Анна Смирнова</div>
+            <div class="staff-role-badge" id="adminRoleBadge">👑 Управляющая смены</div>
+          </div>
+        </div>
+        <button class="btn-edit-profile" onclick="openAdminProfileModal()">✏️ Профиль</button>
+      </div>
+
+      <!-- Staff Role Switcher Bar -->
+      <div class="role-segmented-control">
+        <div class="role-segmented-item active" id="roleItemManager" onclick="switchStaffRole('manager')">👑 Управляющая</div>
+        <div class="role-segmented-item" id="roleItemChef" onclick="switchStaffRole('chef')">👨‍🍳 Шеф-Повар</div>
+        <div class="role-segmented-item" id="roleItemCashier" onclick="switchStaffRole('cashier')">💼 Касса</div>
+      </div>
+    </div>
+
+    <!-- Metrics Summary -->
+    <div class="metrics-banner">
+      <div class="metric-box">
+        <div class="metric-val">📦 24</div>
+        <div class="metric-lbl">Заказов за смену</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val">💰 4.85m ₫</div>
+        <div class="metric-lbl">Выручка заведения</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val">⏱️ 14 мин</div>
+        <div class="metric-lbl">Средний чек 202k ₫</div>
+      </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="admin-tab-bar">
+      <div class="admin-tab-btn active" id="tabOrders" onclick="switchAdminTab('orders')">👨‍🍳 Заказы Кухни (2)</div>
+      <div class="admin-tab-btn" id="tabStopList" onclick="switchAdminTab('stoplist')">⛔ Стоп-лист Меню</div>
+    </div>
+
+    <!-- View 1: Orders KDS Area -->
+    <div class="admin-content-section" id="viewAdminOrders">
+      
+      <!-- Kitchen Card 1043 -->
+      <div class="kitchen-card" id="kcard-1043">
+        <div class="kitchen-card-header">
+          <div>
+            <div class="order-id">Заказ #1043</div>
+            <div style="font-size: 11px; color: var(--text-muted);">⏱️ Поступил 12 мин назад • Доставка</div>
+          </div>
+          <span class="status-badge badge-prep" id="kbadge-1043">👨‍🍳 Готовится</span>
+        </div>
+
+        <div class="items-list-box">
+          <div><span class="item-name">1. 🧇 Вафля с лососем</span> x1</div>
+          <div class="item-mod">• Основа: С творогом (Классика) | Добавка: 🥑 Авокадо</div>
+          <div style="margin-top: 6px;"><span class="item-name">2. 🥥 Свежий Кокос</span> x1</div>
+        </div>
+
+        <div class="courier-assign-row">
+          <div>
+            <div style="font-weight: 700; color: #ffffff;">Назначенный курьер:</div>
+            <div style="font-size: 11px; color: var(--accent-lime);" id="adminCourierVal-1043">Денис (Honda Wave 79-N1)</div>
+          </div>
+          <select class="courier-select" onchange="assignCourierAdmin(1043, this.value)">
+            <option value="Денис (Honda Wave)">Денис (Wave)</option>
+            <option value="Антон (Honda Vision)">Антон (Vision)</option>
+            <option value="Нгуен (Yamaha)">Нгуен (Yamaha)</option>
+          </select>
+        </div>
+
+        <button class="btn-admin-action btn-ready" id="abtn-1043" onclick="advanceAdminOrder(1043)">
+          🔥 Готово — Передать Курьеру Денису
+        </button>
+      </div>
+
+      <!-- Kitchen Card 1044 -->
+      <div class="kitchen-card" id="kcard-1044">
+        <div class="kitchen-card-header">
+          <div>
+            <div class="order-id">Заказ #1044</div>
+            <div style="font-size: 11px; color: var(--text-muted);">⏱️ Поступил 4 мин назад • Доставка</div>
+          </div>
+          <span class="status-badge badge-new" id="kbadge-1044">🔔 Новый Заказ</span>
+        </div>
+
+        <div class="items-list-box">
+          <div><span class="item-name">1. 🥗 Грин Боул с киноа</span> x1</div>
+          <div class="item-mod">• Соус: Оливковый с лимоном</div>
+          <div style="margin-top: 6px;"><span class="item-name">2. ☕ Колд-Брю Кофе</span> x1</div>
+        </div>
+
+        <div class="courier-assign-row">
+          <div>
+            <div style="font-weight: 700; color: #ffffff;">Назначенный курьер:</div>
+            <div style="font-size: 11px; color: var(--text-muted);" id="adminCourierVal-1044">⏳ Ожидает курьера</div>
+          </div>
+          <select class="courier-select" onchange="assignCourierAdmin(1044, this.value)">
+            <option value="">Назначить курьера...</option>
+            <option value="Денис (Honda Wave)">Денис (Wave)</option>
+            <option value="Антон (Honda Vision)">Антон (Vision)</option>
+            <option value="Нгуен (Yamaha)">Нгуен (Yamaha)</option>
+          </select>
+        </div>
+
+        <button class="btn-admin-action btn-prep" id="abtn-1044" onclick="advanceAdminOrder(1044)">
+          👨‍🍳 Принять в работу (Начать готовку)
+        </button>
+      </div>
+
+    </div>
+
+    <!-- View 2: Stop List Management -->
+    <div class="admin-content-section" id="viewAdminStopList" style="display: none;">
+      
+      <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;">Управление наличием блюд (Стоп-лист в 2 клика):</div>
+
+      <!-- Item 1 -->
+      <div class="stop-list-card">
+        <div>
+          <div class="stop-item-title">🧇 Вафля с лососем</div>
+          <div class="stop-item-category">Категория: Вафли</div>
+        </div>
+        <button class="btn-toggle-stop btn-in-stock" onclick="toggleStopList(this, 'Вафля с лососем')">🟢 В наличии</button>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="stop-list-card">
+        <div>
+          <div class="stop-item-title">🥑 Авокадо Свежее (Суперфуд)</div>
+          <div class="stop-item-category">Категория: Добавки / Топпинги</div>
+        </div>
+        <button class="btn-toggle-stop btn-in-stock" onclick="toggleStopList(this, 'Авокадо')">🟢 В наличии</button>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="stop-list-card">
+        <div>
+          <div class="stop-item-title">🥞 Вафля Шоколадная с муссом</div>
+          <div class="stop-item-category">Категория: Десерты</div>
+        </div>
+        <button class="btn-toggle-stop btn-out-stock" onclick="toggleStopList(this, 'Вафля Шоколадная')">⛔ В стоп-листе</button>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="stop-list-card">
+        <div>
+          <div class="stop-item-title">🧠 Ежовик гребенчатый (Lion's Mane)</div>
+          <div class="stop-item-category">Категория: Функциональные добавки</div>
+        </div>
+        <button class="btn-toggle-stop btn-in-stock" onclick="toggleStopList(this, 'Ежовик')">🟢 В наличии</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Admin Profile Edit Modal -->
+  <div class="modal-overlay" id="adminProfileModal">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <div style="font-weight: 800; font-size: 16px; color: #ffffff;">👤 Личный Кабинет Администратора</div>
+        <button class="btn-toggle-stop" style="width: 32px; height: 32px; padding: 0; border-radius: 50%; background: #334155; color: #fff;" onclick="closeAdminProfileModal()">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 22px;">
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">ФИО Администратора / Менеджера:</label>
+          <input type="text" id="inputAdminName" value="Анна Смирнова" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 13px; font-weight: 700;">
+        </div>
+
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Активная Роль Персонала:</label>
+          <select id="selectAdminRole" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 13px; font-weight: 700;">
+            <option value="manager" selected>👑 Управляющая смены (Полный доступ)</option>
+            <option value="chef">👨‍🍳 Старший Шеф-Повар (KDS & Стоп-лист)</option>
+            <option value="cashier">💼 Менеджер Кассы (Курьеры & Чеки)</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Telegram / Телефон для связи:</label>
+          <input type="text" id="inputAdminPhone" value="@Anna_Balance_Mgr (+84 98 765 4321)" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 12px; font-weight: 600;">
+        </div>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 14px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 12px; font-weight: 700; color: #fff;">Прием заказов заведением:</div>
+            <div style="font-size: 10px; color: var(--text-muted);" id="venueStatusText">🟢 Заведение открыто — заказы принимаются</div>
+          </div>
+          <button class="btn-toggle-stop btn-in-stock" id="btnVenueStatus" onclick="toggleVenueStatus()">Открыто</button>
+        </div>
+      </div>
+
+      <button class="btn-admin-action btn-ready" onclick="saveAdminProfile()">Сохранить профиль</button>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) tg.expand();
+
+    let adminProfile = {
+      name: 'Анна Смирнова',
+      role: 'manager',
+      roleTitle: '👑 Управляющая смены',
+      isVenueOpen: true
+    };
+
+    const kitchenOrders = {
+      1043: { status: 'PREP', courier: 'Денис (Honda Wave)' },
+      1044: { status: 'NEW', courier: '' }
+    };
+
+    function openAdminProfileModal() {
+      document.getElementById('adminProfileModal').classList.add('active');
+    }
+    function closeAdminProfileModal() {
+      document.getElementById('adminProfileModal').classList.remove('active');
+    }
+
+    function saveAdminProfile() {
+      const name = document.getElementById('inputAdminName').value;
+      const roleVal = document.getElementById('selectAdminRole').value;
+
+      if (name) adminProfile.name = name;
+      switchStaffRole(roleVal);
+      
+      document.getElementById('adminNameText').innerText = adminProfile.name;
+      closeAdminProfileModal();
+      if (tg && tg.showAlert) tg.showAlert("✅ Профиль и роль администратора успешно сохранены!");
+    }
+
+    function switchStaffRole(role) {
+      adminProfile.role = role;
+      document.getElementById('roleItemManager').classList.toggle('active', role === 'manager');
+      document.getElementById('roleItemChef').classList.toggle('active', role === 'chef');
+      document.getElementById('roleItemCashier').classList.toggle('active', role === 'cashier');
+      
+      const badge = document.getElementById('adminRoleBadge');
+      if (role === 'manager') {
+        adminProfile.roleTitle = '👑 Управляющая смены';
+        badge.innerText = adminProfile.roleTitle;
+        badge.style.borderColor = 'var(--accent-emerald)';
+        badge.style.color = 'var(--accent-emerald)';
+      } else if (role === 'chef') {
+        adminProfile.roleTitle = '👨‍🍳 Старший Шеф-Повар';
+        badge.innerText = adminProfile.roleTitle;
+        badge.style.borderColor = 'var(--accent-amber)';
+        badge.style.color = 'var(--accent-amber)';
+      } else if (role === 'cashier') {
+        adminProfile.roleTitle = '💼 Менеджер Кассы';
+        badge.innerText = adminProfile.roleTitle;
+        badge.style.borderColor = '#60a5fa';
+        badge.style.color = '#60a5fa';
+      }
+
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
+
+    function toggleVenueStatus() {
+      adminProfile.isVenueOpen = !adminProfile.isVenueOpen;
+      const desc = document.getElementById('venueStatusText');
+      const btn = document.getElementById('btnVenueStatus');
+
+      if (adminProfile.isVenueOpen) {
+        desc.innerText = "🟢 Заведение открыто — заказы принимаются";
+        btn.className = "btn-toggle-stop btn-in-stock";
+        btn.innerText = "Открыто";
+      } else {
+        desc.innerText = "🔴 Заведение закрыто — прием заказов приостановлен";
+        btn.className = "btn-toggle-stop btn-out-stock";
+        btn.innerText = "Закрыто";
+      }
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
+
+    function switchAdminTab(tab) {
+      document.getElementById('tabOrders').classList.toggle('active', tab === 'orders');
+      document.getElementById('tabStopList').classList.toggle('active', tab === 'stoplist');
+
+      document.getElementById('viewAdminOrders').style.display = tab === 'orders' ? 'flex' : 'none';
+      document.getElementById('viewAdminStopList').style.display = tab === 'stoplist' ? 'flex' : 'none';
+
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
+
+    function toggleSound() {
+      if (tg && tg.showAlert) tg.showAlert("🔊 Звуковые уведомления кухни включены!");
+    }
+
+    function assignCourierAdmin(id, courierName) {
+      kitchenOrders[id].courier = courierName;
+      document.getElementById(`adminCourierVal-${id}`).innerText = courierName || '⏳ Ожидает курьера';
+      document.getElementById(`adminCourierVal-${id}`).style.color = courierName ? 'var(--accent-lime)' : 'var(--text-muted)';
+      
+      if (tg && tg.showAlert) tg.showAlert(`✅ Заказ #${id} закреплен за курьером: ${courierName}`);
+    }
+
+    function advanceAdminOrder(id) {
+      const btn = document.getElementById(`abtn-${id}`);
+      const badge = document.getElementById(`kbadge-${id}`);
+      const order = kitchenOrders[id];
+
+      if (order.status === 'NEW') {
+        order.status = 'PREP';
+        badge.className = 'status-badge badge-prep';
+        badge.innerText = '👨‍🍳 Готовится';
+        btn.className = 'btn-admin-action btn-ready';
+        btn.innerHTML = '🔥 Готово — Передать Курьеру';
+        if (tg && tg.showAlert) tg.showAlert(`👨‍🍳 Заказ #${id} принят кухней в работу!`);
+      } else if (order.status === 'PREP') {
+        order.status = 'WAY';
+        badge.className = 'status-badge badge-way';
+        badge.innerText = '🛵 Передан курьеру';
+        btn.className = 'btn-admin-action';
+        btn.style.background = '#334155';
+        btn.style.color = '#94a3b8';
+        btn.innerHTML = '✅ Передан на доставку';
+        btn.disabled = true;
+        if (tg && tg.showAlert) tg.showAlert(`🛵 Заказ #${id} передан курьеру ${order.courier || 'Денису'}! Клиенту отправлено пуш-уведомление.`);
+      }
+    }
+
+    function toggleStopList(btn, itemName) {
+      if (btn.classList.contains('btn-in-stock')) {
+        btn.className = 'btn-toggle-stop btn-out-stock';
+        btn.innerText = '⛔ В стоп-листе';
+        if (tg && tg.showAlert) tg.showAlert(`⛔ Позиция «${itemName}» переведена в СТОП-ЛИСТ заведения! В Mini App блюдо временно недоступно.`);
+      } else {
+        btn.className = 'btn-toggle-stop btn-in-stock';
+        btn.innerText = '🟢 В наличии';
+        if (tg && tg.showAlert) tg.showAlert(`🟢 Позиция «${itemName}» снова В НАЛИЧИИ! Доступна для заказа в Mini App.`);
+      }
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('warning');
+    }
+  </script>
+</body>
+</html>

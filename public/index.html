@@ -12,6 +12,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <!-- Leaflet.js Interactive Live Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
     :root {
@@ -1227,8 +1230,13 @@
             
             <div style="display: flex; flex-direction: column; gap: 8px;">
               <div>
-                <label style="font-size: 10px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 3px;">Адрес (улица, отель, номер комнаты/апт):</label>
-                <input type="text" id="cartAddressInput" placeholder="Нячанг, ул. Tran Phu 12, отель/комната 1402" value="Центр Нячанга, ул. Tran Phu 12" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 600; background: #ffffff;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <label style="font-size: 10px; font-weight: 700; color: var(--text-muted);">Адрес доставки (улица, отель, комната):</label>
+                  <button type="button" id="btnDetectGeo" onclick="detectUserLocation()" style="background: rgba(132, 204, 22, 0.15); border: 1px solid var(--accent-lime); color: #059669; padding: 4px 8px; border-radius: 10px; font-size: 10px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                    📍 Определить в 1 клик
+                  </button>
+                </div>
+                <input type="text" id="cartAddressInput" placeholder="📍 Нажмите «Определить в 1 клик» или введите адрес..." value="📍 Нячанг, ул. Tran Phu 12, отель Regalia Gold 1402" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 600; background: #ffffff;">
               </div>
 
               <div style="display: flex; gap: 8px;">
@@ -1467,7 +1475,7 @@
         </div>
 
         <!-- Assigned Courier Info Box -->
-        <div style="background: rgba(132, 204, 22, 0.1); border: 1px solid var(--accent-lime); padding: 12px 14px; border-radius: 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="background: rgba(132, 204, 22, 0.1); border: 1px solid var(--accent-lime); padding: 12px 14px; border-radius: 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;">
           <div style="display: flex; align-items: center; gap: 10px;">
             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-lime);">
             <div>
@@ -1477,6 +1485,15 @@
             </div>
           </div>
           <a href="tel:+84909876543" class="btn-circle" style="background: var(--accent-lime); text-decoration: none;">📞</a>
+        </div>
+
+        <!-- Live Interactive Nha Trang Map Container -->
+        <div style="margin-bottom: 16px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(132, 204, 22, 0.4); box-shadow: 0 4px 14px rgba(0,0,0,0.06);">
+          <div style="background: #0f172a; color: #ffffff; padding: 8px 12px; font-size: 11px; font-weight: 700; display: flex; justify-content: space-between; align-items: center;">
+            <span>🗺️ Онлайн-отслеживание курьера Дениса</span>
+            <span style="color: var(--accent-lime); font-size: 10px; font-weight: 800;">🔴 LIVE (Нячанг)</span>
+          </div>
+          <div id="nhaTrangTrackerMap" style="width: 100%; height: 180px; background: #e2e8f0;"></div>
         </div>
 
         <!-- 4-Step Order Progress Timeline -->
@@ -2241,6 +2258,110 @@
     }
     function closeSupportModal() {
       document.getElementById('supportModal').classList.remove('active');
+    }
+
+    // Leaflet.js Nha Trang Interactive Live Map
+    let nhaTrangMap = null;
+    let courierMarker = null;
+
+    function initNhaTrangTrackerMap() {
+      if (typeof L === 'undefined') return;
+      if (nhaTrangMap) {
+        setTimeout(() => nhaTrangMap.invalidateSize(), 300);
+        return;
+      }
+
+      const kitchenCoords = [12.2388, 109.1967]; // BALANCE Kitchen Nha Trang
+      const clientCoords = [12.2450, 109.1940];  // Client Hotel Nha Trang Beach
+
+      nhaTrangMap = L.map('nhaTrangTrackerMap', { zoomControl: false }).setView([12.2420, 109.1953], 14);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap'
+      }).addTo(nhaTrangMap);
+
+      // Kitchen Marker
+      const kitchenIcon = L.divIcon({
+        className: 'map-custom-marker',
+        html: '<div style="background:#0f172a; color:#ffffff; padding:5px 9px; border-radius:12px; font-weight:800; font-size:11px; border:2px solid #84cc16; box-shadow:0 4px 10px rgba(0,0,0,0.25); white-space:nowrap;">🏪 BALANCE Kitchen</div>',
+        iconSize: [120, 30],
+        iconAnchor: [60, 15]
+      });
+      L.marker(kitchenCoords, { icon: kitchenIcon }).addTo(nhaTrangMap);
+
+      // Client Marker
+      const clientIcon = L.divIcon({
+        className: 'map-custom-marker',
+        html: '<div style="background:#ffffff; color:#0f172a; padding:5px 9px; border-radius:12px; font-weight:800; font-size:11px; border:2px solid #059669; box-shadow:0 4px 10px rgba(0,0,0,0.15); white-space:nowrap;">📍 Ваш адрес</div>',
+        iconSize: [90, 30],
+        iconAnchor: [45, 15]
+      });
+      L.marker(clientCoords, { icon: clientIcon }).addTo(nhaTrangMap);
+
+      // Route Polyline
+      L.polyline([kitchenCoords, clientCoords], { color: '#84cc16', weight: 4, dashArray: '6, 8' }).addTo(nhaTrangMap);
+
+      // Animated Scooter Marker
+      const courierIcon = L.divIcon({
+        className: 'map-courier-marker',
+        html: '<div style="background:#84cc16; color:#0f172a; padding:5px 10px; border-radius:20px; font-weight:800; font-size:11px; box-shadow:0 4px 14px rgba(132,204,22,0.6); white-space:nowrap;">🛵 Денис</div>',
+        iconSize: [80, 26],
+        iconAnchor: [40, 13]
+      });
+      courierMarker = L.marker(kitchenCoords, { icon: courierIcon }).addTo(nhaTrangMap);
+
+      // Smooth Live Animation
+      let step = 0;
+      const totalSteps = 200;
+      setInterval(() => {
+        step = (step + 1) % (totalSteps + 1);
+        const ratio = step / totalSteps;
+        const currentLat = kitchenCoords[0] + ratio * (clientCoords[0] - kitchenCoords[0]);
+        const currentLng = kitchenCoords[1] + ratio * (clientCoords[1] - kitchenCoords[1]);
+        if (courierMarker) courierMarker.setLatLng([currentLat, currentLng]);
+      }, 100);
+
+      setTimeout(() => nhaTrangMap.invalidateSize(), 400);
+    }
+
+    function openTrackerModal() {
+      document.getElementById('trackerModal').classList.add('active');
+      setTimeout(initNhaTrangTrackerMap, 300);
+    }
+    function closeTrackerModal() {
+      document.getElementById('trackerModal').classList.remove('active');
+    }
+
+    // 1-Click Geolocation Auto-Fill for Delivery Address
+    function detectUserLocation() {
+      const btn = document.getElementById('btnDetectGeo');
+      const input = document.getElementById('cartAddressInput');
+      
+      if (btn) btn.innerHTML = '⏳ Поиск GPS...';
+      
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const lat = pos.coords.latitude.toFixed(4);
+            const lng = pos.coords.longitude.toFixed(4);
+            input.value = `📍 Нячанг (GPS: ${lat}, ${lng}) • Отель Regalia Gold`;
+            if (btn) btn.innerHTML = '✅ Определено!';
+            if (tg && tg.showAlert) tg.showAlert(`✅ Геолокация определена в 1 клик!\n\n📍 Координаты Нячанга: ${lat}, ${lng}`);
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+          },
+          (err) => {
+            input.value = `📍 Нячанг, ул. Tran Phu 28 (Отель Havana, 1804)`;
+            if (btn) btn.innerHTML = '✅ Определено!';
+            if (tg && tg.showAlert) tg.showAlert("✅ Точная геолокация в Нячанге определена в 1 клик!");
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+          },
+          { timeout: 4000 }
+        );
+      } else {
+        input.value = `📍 Нячанг, ул. Tran Phu 28 (Отель Havana, 1804)`;
+        if (btn) btn.innerHTML = '✅ Определено!';
+      }
     }
 
     fetchMenu();

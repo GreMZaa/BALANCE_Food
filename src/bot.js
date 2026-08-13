@@ -110,7 +110,7 @@ bot.command('start', async (ctx) => {
     .text('🎁 Реферальная программа', 'referral_info')
     .text('👤 Мой профиль', 'user_profile');
 
-  // Отправка ответа с инлайн и реплай клавиатурами
+  // Отправка приветственного сообщения с меню Telegram
   await ctx.reply(
     `👋 Добро пожаловать в чат-бот кафе *BALANCE Fitness • Protein • Detox* (Нячанг)!\n\n` +
     `🥗 Здоровые фитнес-вафли без глютена, боулы с подсчетом КБЖУ, спешелти кофе и функциональные смузи.\n\n` +
@@ -121,11 +121,6 @@ bot.command('start', async (ctx) => {
       reply_markup: getReplyKeyboard(webAppUrl) 
     }
   );
-
-  // Отправляем дополнительно сообщение с инлайн кнопками
-  await ctx.reply(`Выберите нужное действие в меню ниже:`, {
-    reply_markup: inlineKeyboard
-  });
 });
 
 // 📌 2. Команда /menu & Hears

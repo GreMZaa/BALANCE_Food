@@ -28,6 +28,11 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/admin.html'));
 });
 
+// Роут интерфейса владельца / маркетолога
+app.get('/owner', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/owner.html'));
+});
+
 // Инициализация бота
 const bot = new Bot(BOT_TOKEN);
 

@@ -17,7 +17,9 @@ app.use(express.json());
 const bot = new Bot(BOT_TOKEN);
 
 // Webhook роут для Telegram бота в Vercel Serverless
-app.use('/api/webhook', webhookCallback(bot, 'express'));
+const handleWebhook = webhookCallback(bot, 'express');
+app.use('/api/webhook', handleWebhook);
+app.use('/webhook', handleWebhook);
 
 app.use(express.static(path.join(__dirname, '../public')));
 

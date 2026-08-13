@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BALANCE Courier — Панель Курьера (Нячанг)</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-app: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-sub: #334155;
+      --accent-lime: #84cc16;
+      --accent-green: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #020617;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .courier-viewport {
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg-app);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding-bottom: 30px;
+    }
+
+    /* Top Header */
+    .courier-header {
+      background: #1e293b;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid #334155;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .brand-title span { color: var(--accent-lime); }
+
+    .courier-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-profile-trigger {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #334155;
+      border: 1.5px solid var(--accent-lime);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .btn-profile-trigger img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Courier Profile Banner */
+    .courier-profile-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      margin: 14px 16px 4px 16px;
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .profile-top-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .courier-avatar-large {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-lime);
+      object-fit: cover;
+    }
+    .courier-info-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .courier-info-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .courier-stats-row {
+      display: flex;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 14px;
+      justify-content: space-around;
+      text-align: center;
+    }
+    .stat-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--accent-lime);
+    }
+    .stat-lbl {
+      font-size: 9px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(2, 6, 23, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-card {
+      background: #1e293b;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      width: 100%;
+      max-width: 480px;
+      padding: 20px 18px 24px 18px;
+      border: 1px solid #334155;
+    }
+
+    /* Courier Assigned Order Highlight */
+    .order-card.assigned-to-me {
+      border: 2px solid var(--accent-lime);
+      box-shadow: 0 0 20px rgba(132, 204, 22, 0.25);
+    }
+
+    .courier-assigned-badge {
+      background: rgba(132, 204, 22, 0.15);
+      color: var(--accent-lime);
+      border: 1px solid var(--accent-lime);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Filter Tabs */
+    .tab-bar-container {
+      padding: 10px 16px 6px 16px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 0;
+      border-radius: 14px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--accent-lime);
+      color: #0f172a;
+      border-color: var(--accent-lime);
+    }
+
+    /* Orders List Area */
+    .orders-area {
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .order-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .order-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #334155;
+    }
+
+    .order-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .order-time {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .pay-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+    .pay-cash { background: rgba(234, 179, 8, 0.15); color: #facc15; }
+    .pay-qr { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .pay-usdt { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+
+    /* Client Details Section */
+    .client-box {
+      background: #0f172a;
+      padding: 12px;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .client-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .client-row-icon { font-size: 14px; margin-top: 1px; }
+    .client-val { font-weight: 600; color: #f8fafc; line-height: 1.4; }
+
+    /* Action Buttons Row */
+    .shortcut-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-shortcut {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #334155;
+      border: none;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-shortcut:active { background: #475569; }
+
+    /* Items Summary */
+    .items-summary {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.03);
+      padding: 10px 12px;
+      border-radius: 12px;
+      line-height: 1.5;
+    }
+    .items-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed #334155;
+      font-size: 13px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    /* Main Order Status Button */
+    .btn-status-action {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      border: none;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    }
+    .btn-take-order {
+      background: var(--accent-lime);
+      color: #0f172a;
+    }
+    .btn-take-order:active { transform: scale(0.98); }
+
+    .btn-deliver-order {
+      background: var(--accent-green);
+      color: #ffffff;
+    }
+
+    .btn-done-order {
+      background: #334155;
+      color: #94a3b8;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="courier-viewport">
+
+    <!-- Header -->
+    <div class="courier-header">
+      <div class="brand-title">🛵 BALANCE <span>Courier</span></div>
+      <div class="courier-header-right">
+        <div class="courier-status-badge" id="headerShiftStatus" onclick="toggleShiftStatus()">
+          <div class="status-dot"></div> <span id="headerShiftText">В сети (Нячанг)</span>
+        </div>
+        <div class="btn-profile-trigger" onclick="openCourierProfileModal()">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Courier Avatar" id="courierHeaderImg">
+        </div>
+      </div>
+    </div>
+
+    <!-- Courier Profile Banner -->
+    <div class="courier-profile-card">
+      <div class="profile-top-row">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Avatar" class="courier-avatar-large" id="courierBannerImg">
+        <div style="flex: 1;">
+          <div class="courier-info-name" id="courierNameText">Денис (Курьер BALANCE)</div>
+          <div class="courier-info-meta" id="courierVehicleText">🛵 Honda Wave Alpha (79-N1 482.19) • 📞 +84 90 987 6543</div>
+        </div>
+        <button class="btn-shortcut" style="padding: 6px 10px; font-size: 11px;" onclick="openCourierProfileModal()">✏️ Редактировать</button>
+      </div>
+
+      <div class="courier-stats-row">
+        <div>
+          <div class="stat-val">⭐️ 4.98</div>
+          <div class="stat-lbl">Рейтинг курьера</div>
+        </div>
+        <div>
+          <div class="stat-val">🛵 14</div>
+          <div class="stat-lbl">Доставок сегодня</div>
+        </div>
+        <div>
+          <div class="stat-val">💰 2,450k ₫</div>
+          <div class="stat-lbl">Собрано наличных</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar-container">
+      <div class="tab-btn active" id="tabActive" onclick="switchCourierTab('active')">🛵 На доставку (2)</div>
+      <div class="tab-btn" id="tabHistory" onclick="switchCourierTab('history')">✅ Выполненные (14)</div>
+    </div>
+
+    <!-- Orders Area -->
+    <div class="orders-area" id="ordersList">
+      <!-- Order 1 -->
+      <div class="order-card" id="card-1043">
+        <div class="order-card-header">
+          <div>
+            <div class="order-num">Заказ #1043</div>
+            <div class="order-time">⏱️ Оформлен 12 мин назад</div>
+          </div>
+          <span class="pay-tag pay-cash">💵 Сдача с 500k</span>
+        </div>
+
+        <div class="client-box">
+          <div class="client-row">
+            <span class="client-row-icon">👤</span>
+            <div class="client-val">София Уилльямс (+84 90 123 4567)</div>
+          </div>
+          <div class="client-row">
+            <span class="client-row-icon">📍</span>
+            <div class="client-val" style="color: var(--accent-lime);">Центр Нячанга, ул. Tran Phu 12, отель Muong Thanh, комната 1402</div>
+          </div>
+          <div class="client-row">
+            <span class="client-row-icon">💬</span>
+            <div class="client-val" style="color: #facc15;">Оставить у двери / без приборов</div>
+          </div>
+        </div>
+
+        <!-- Courier Binding Badge -->
+        <div id="courier-badge-1043" class="courier-assigned-badge" style="background: rgba(255,255,255,0.05); color: #94a3b8; border-color: #334155;">
+          ⏳ Не назначен курьер (Свободен)
+        </div>
+
+        <!-- Shortcuts -->
+        <div class="shortcut-row">
+          <a href="https://maps.google.com/?q=Tran+Phu+12+Nha+Trang" target="_blank" class="btn-shortcut">🗺️ Карта</a>
+          <a href="tel:+84901234567" class="btn-shortcut">📞 Звонок</a>
+          <a href="https://wa.me/84901234567" target="_blank" class="btn-shortcut">💬 WhatsApp</a>
+        </div>
+
+        <!-- Items Summary -->
+        <div class="items-summary">
+          <div>1. 🧇 Вафля с лососем (140,000 ₫) x1</div>
+          <div>2. 🥥 Свежий Кокос (35,000 ₫) x1</div>
+          <div class="items-total-row">
+            <span>К оплате курьеру:</span>
+            <span style="color: var(--accent-lime); font-size: 15px;">175,000 VND</span>
+          </div>
+        </div>
+
+        <button class="btn-status-action btn-take-order" id="btn-1043" onclick="advanceOrderStatus(1043)">
+          🛵 Взять в доставку ("В пути")
+        </button>
+      </div>
+
+      <!-- Order 2 -->
+      <div class="order-card" id="card-1044">
+        <div class="order-card-header">
+          <div>
+            <div class="order-num">Заказ #1044</div>
+            <div class="order-time">⏱️ Оформлен 4 мин назад</div>
+          </div>
+          <span class="pay-tag pay-qr">💳 VietQR</span>
+        </div>
+
+        <div class="client-box">
+          <div class="client-row">
+            <span class="client-row-icon">👤</span>
+            <div class="client-val">Алексей Громов (+84 91 888 9900)</div>
+          </div>
+          <div class="client-row">
+            <span class="client-row-icon">📍</span>
+            <div class="client-val" style="color: var(--accent-lime);">Север Нячанга, ул. Pham Van Dong 45, апартаменты Scenia Bay 1805</div>
+          </div>
+          <div class="client-row">
+            <span class="client-row-icon">💬</span>
+            <div class="client-val">Подняться на лифте / позвонить при входе</div>
+          </div>
+        </div>
+
+        <!-- Courier Binding Badge -->
+        <div id="courier-badge-1044" class="courier-assigned-badge" style="background: rgba(255,255,255,0.05); color: #94a3b8; border-color: #334155;">
+          ⏳ Не назначен курьер (Свободен)
+        </div>
+
+        <!-- Shortcuts -->
+        <div class="shortcut-row">
+          <a href="https://maps.google.com/?q=Pham+Van+Dong+45+Nha+Trang" target="_blank" class="btn-shortcut">🗺️ Карта</a>
+          <a href="tel:+84918889900" class="btn-shortcut">📞 Звонок</a>
+          <a href="https://wa.me/84918889900" target="_blank" class="btn-shortcut">💬 WhatsApp</a>
+        </div>
+
+        <!-- Items Summary -->
+        <div class="items-summary">
+          <div>1. 🥗 Грин Боул с киноа и авокадо (120,000 ₫) x1</div>
+          <div>2. ☕ Колд-Брю Кофе (45,000 ₫) x1</div>
+          <div class="items-total-row">
+            <span>Оплачено VietQR:</span>
+            <span style="color: #60a5fa; font-size: 15px;">165,000 VND</span>
+          </div>
+        </div>
+
+        <button class="btn-status-action btn-take-order" id="btn-1044" onclick="advanceOrderStatus(1044)">
+          🛵 Взять в доставку ("В пути")
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Courier Profile Edit Modal -->
+  <div class="modal-overlay" id="courierProfileModal">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <div style="font-weight: 800; font-size: 16px; color: #ffffff;">👤 Профиль Курьера</div>
+        <button class="btn-shortcut" style="width: 32px; height: 32px; padding: 0; border-radius: 50%;" onclick="closeCourierProfileModal()">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Имя и фамилия курьера:</label>
+          <input type="text" id="inputCourierName" value="Денис (Курьер BALANCE)" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 13px; font-weight: 700;">
+        </div>
+
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Телефон / WhatsApp:</label>
+          <input type="text" id="inputCourierPhone" value="+84 90 987 6543" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 13px; font-weight: 700;">
+        </div>
+
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Транспорт и номер скутера:</label>
+          <input type="text" id="inputCourierVehicle" value="🛵 Honda Wave Alpha (79-N1 482.19)" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 13px; font-weight: 700;">
+        </div>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 12px; font-weight: 700; color: #fff;">Статус смены:</div>
+            <div style="font-size: 10px; color: var(--text-muted);" id="shiftStatusDesc">🟢 В сети — готов принимать заказы</div>
+          </div>
+          <button class="btn-shortcut" style="padding: 8px 12px; font-size: 11px; background: var(--accent-lime); color: #0f172a;" onclick="toggleShiftStatus()">Сменить</button>
+        </div>
+      </div>
+
+      <button class="btn-status-action btn-take-order" onclick="saveCourierProfile()">Сохранить профиль</button>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) tg.expand();
+
+    let courierProfile = {
+      id: 'courier_1',
+      name: 'Денис (Курьер BALANCE)',
+      phone: '+84 90 987 6543',
+      vehicle: '🛵 Honda Wave Alpha (79-N1 482.19)',
+      isOnShift: true
+    };
+
+    const orderStates = {
+      1043: { status: 'PREPARING', courier: null },
+      1044: { status: 'PREPARING', courier: null }
+    };
+
+    function openCourierProfileModal() {
+      document.getElementById('courierProfileModal').classList.add('active');
+    }
+    function closeCourierProfileModal() {
+      document.getElementById('courierProfileModal').classList.remove('active');
+    }
+
+    function saveCourierProfile() {
+      const name = document.getElementById('inputCourierName').value;
+      const phone = document.getElementById('inputCourierPhone').value;
+      const vehicle = document.getElementById('inputCourierVehicle').value;
+
+      if (name) courierProfile.name = name;
+      if (phone) courierProfile.phone = phone;
+      if (vehicle) courierProfile.vehicle = vehicle;
+
+      document.getElementById('courierNameText').innerText = courierProfile.name;
+      document.getElementById('courierVehicleText').innerText = `${courierProfile.vehicle} • 📞 ${courierProfile.phone}`;
+      
+      closeCourierProfileModal();
+      if (tg && tg.showAlert) tg.showAlert("✅ Профиль курьера обновлен!");
+    }
+
+    function toggleShiftStatus() {
+      courierProfile.isOnShift = !courierProfile.isOnShift;
+      const text = document.getElementById('headerShiftText');
+      const desc = document.getElementById('shiftStatusDesc');
+      if (courierProfile.isOnShift) {
+        text.innerText = "В сети (Нячанг)";
+        desc.innerText = "🟢 В сети — готов принимать заказы";
+      } else {
+        text.innerText = "🔴 На паузе";
+        desc.innerText = "🔴 Пауза — заказы временно не поступают";
+      }
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
+
+    function switchCourierTab(tab) {
+      document.getElementById('tabActive').classList.toggle('active', tab === 'active');
+      document.getElementById('tabHistory').classList.toggle('active', tab === 'history');
+
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+
+      if (tab === 'history') {
+        alert("История: За сегодня курьером доставлено 14 заказов (выручка 2,450,000 VND).");
+      }
+    }
+
+    function advanceOrderStatus(id) {
+      const btn = document.getElementById(`btn-${id}`);
+      const card = document.getElementById(`card-${id}`);
+      const badge = document.getElementById(`courier-badge-${id}`);
+      if (!btn) return;
+
+      const current = orderStates[id];
+
+      if (current.status === 'PREPARING') {
+        // Assign to active courier!
+        current.status = 'ON_THE_WAY';
+        current.courier = courierProfile;
+
+        card.classList.add('assigned-to-me');
+        badge.className = 'courier-assigned-badge';
+        badge.style.background = 'rgba(132, 204, 22, 0.15)';
+        badge.style.borderColor = 'var(--accent-lime)';
+        badge.style.color = 'var(--accent-lime)';
+        badge.innerHTML = `📌 Назначен вам: ${courierProfile.name} (${courierProfile.vehicle.split('(')[1] || 'Wave'})`;
+
+        btn.className = 'btn-status-action btn-deliver-order';
+        btn.innerHTML = '✅ Отметить как "Доставлен"';
+
+        if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        if (tg && tg.showAlert) tg.showAlert(`🛵 Заказ #${id} закреплен за курьером ${courierProfile.name}! Админ и Клиент видят привязку.`);
+      } else if (current.status === 'ON_THE_WAY') {
+        current.status = 'DELIVERED';
+
+        btn.className = 'btn-status-action btn-done-order';
+        btn.innerHTML = '🎉 Заказ успешно доставлен';
+        btn.disabled = true;
+
+        if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        if (tg && tg.showAlert) tg.showAlert(`🎉 Заказ #${id} успешно доставлен клиенту! Начислены бонусы.`);
+      }
+    }
+  </script>
+</body>
+</html>

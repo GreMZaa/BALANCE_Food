@@ -1460,10 +1460,23 @@
           <button class="btn-circle" onclick="closeTrackerModal()">✕</button>
         </div>
 
-        <div style="background: #f8faf9; padding: 14px; border-radius: 16px; text-align: center; margin-bottom: 16px;">
+        <div style="background: #f8faf9; padding: 14px; border-radius: 16px; text-align: center; margin-bottom: 12px;">
           <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Ориентировочное время доставки:</div>
           <div style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: #059669;" id="trackerTimer">~ 22 минуты</div>
           <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Нячанг, курьер BALANCE мчит к вам 🛵</div>
+        </div>
+
+        <!-- Assigned Courier Info Box -->
+        <div style="background: rgba(132, 204, 22, 0.1); border: 1px solid var(--accent-lime); padding: 12px 14px; border-radius: 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-lime);">
+            <div>
+              <div style="font-size: 10px; font-weight: 700; color: #059669;">📌 Назначенный курьер:</div>
+              <div style="font-size: 13px; font-weight: 800; color: #0f172a;" id="trackerCourierName">Денис (Курьер BALANCE)</div>
+              <div style="font-size: 11px; color: var(--text-muted);" id="trackerCourierVehicle">🛵 Honda Wave Alpha (79-N1 482.19)</div>
+            </div>
+          </div>
+          <a href="tel:+84909876543" class="btn-circle" style="background: var(--accent-lime); text-decoration: none;">📞</a>
         </div>
 
         <!-- 4-Step Order Progress Timeline -->

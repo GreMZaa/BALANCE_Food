@@ -18,6 +18,11 @@ app.get('/api/menu', (req, res) => {
   res.json(menuData);
 });
 
+// Роут интерфейса курьера
+app.get('/courier', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/courier.html'));
+});
+
 // Инициализация бота
 const bot = new Bot(BOT_TOKEN);
 
